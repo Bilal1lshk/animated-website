@@ -1,36 +1,81 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# L'Étoile Dorée — Haute Gastronomie & Fine Dining Next.js App
 
-## Getting Started
+A luxury, interactive, animated restaurant web application built with **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4**, **Framer Motion**, and **Lucide Icons**.
 
-First, run the development server:
+---
 
+## 🌟 Key Highlights & Sections Included
+
+1. **Sticky Glassmorphic Navigation Bar (`Navbar.tsx`)**:
+   - Blurred backdrop with responsive mobile drawer menu.
+   - Live service hours and concierge contact bar.
+   - Interactive cart drawer trigger with animated item counter badge.
+   - Direct anchor navigation to all sections.
+
+2. **Hero Section (`Hero.tsx`)**:
+   - Animated ambient lighting and gold particle aesthetic.
+   - Michelin Guide accolade badge and striking typography.
+   - Interactive "Tonight's Chef Recommendation" spotlight card with quick course carousel and instant "Add to Order" action.
+   - Dual Call-to-Actions for Table Reservations and Menu Exploration.
+   - Accolade statistics (Michelin Guide Selected, 350+ Vintages, 100% Organic, 4.9★ Rating).
+
+3. **Our Story & Philosophy (`AboutSection.tsx`)**:
+   - Heritage narrative by Executive Chef Antoine Laurent.
+   - Visual culinary collage with experience badge (14 Years of Excellence).
+   - 3 Culinary pillars: Botanical Terroir, Binchotan Charcoal, and Curated Cellar Vintages.
+
+4. **À La Carte Menu & Quick Ordering (`MenuSection.tsx`)**:
+   - Filterable category tabs: Starters, Chef's Mains, Handcrafted Pasta, Charcoal Grill, Desserts, Cocktails & Cellar.
+   - Dietary filter toggles (Vegetarian, Gluten-Free, Chef's Signatures).
+   - Live search input to find dishes or ingredients.
+   - Dish cards with high-res photography, sommelier wine pairing notes, prep time, calories, and "Add to Order" button with checkmark feedback.
+
+5. **Multi-Course Tasting Journey (`TastingMenuSection.tsx`)**:
+   - 3 Curated dining tiers: Prestige 3-Course, Grand 5-Course, and Imperial 7-Course Omakase with Sommelier wine tiers.
+   - Interactive course progression viewer with course numbers, origins, and wine pairings.
+
+6. **Interactive Table Reservation Engine (`ReservationSection.tsx`)**:
+   - Date picker, guest party counter (1 to 12 guests), and time slot selection (Lunch & Dinner).
+   - Seating zone selector: Main Dining Salon, Chef's Counter, Garden Terrace, or The Wine Vault.
+   - Special occasion and dietary allergy inputs.
+   - Instant confirmation pass with celebratory confetti animation (`canvas-confetti`) and booking reference code.
+
+7. **Guest Acclaim & Reviews (`TestimonialsSection.tsx`)**:
+   - Michelin Guide critique and verified diner reviews with 5-star ratings.
+
+8. **Atmosphere & Gallery (`GallerySection.tsx`)**:
+   - Visual tour of dining spaces, wine vaults, and plating craftsmanship with interactive modal lightbox.
+
+9. **Guest FAQs (`FaqSection.tsx`)**:
+   - Animated accordions for dress code, reservations, allergens, valet, and corkage policy.
+
+10. **Concierge & Footer (`ContactFooter.tsx`)**:
+    - Hours of operation, sanctuary locations (NY & Paris), and concierge lines.
+    - Private dining & buyout information.
+    - Newsletter subscription box with confirmation feedback.
+
+11. **Interactive Cart & Order Drawer (`CartDrawer.tsx`)**:
+    - Slide-over order panel with quantity controls, subtotals, tax, and gratuity calculations.
+    - Simulated order transmission to the kitchen.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Install Dependencies
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Start the Development Server
+```bash
+npm run dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open [http://localhost:3000](http://localhost:3000) with your browser to experience the site.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 3. Production Build
+```bash
+npm run build
+npm run start
+```
