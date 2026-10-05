@@ -14,18 +14,18 @@ export default function GallerySection() {
   }>(null);
 
   return (
-    <section id="gallery" className="py-24 sm:py-32 relative bg-black overflow-hidden">
+    <section id="gallery" className="py-24 sm:py-32 relative bg-white overflow-hidden">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-400/30 bg-amber-500/10 text-amber-300 text-xs uppercase tracking-[0.2em] font-medium mb-4">
-            <Camera className="w-3.5 h-3.5 text-amber-400" />
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-600/30 bg-amber-500/10 text-amber-800 text-xs uppercase tracking-[0.2em] font-medium mb-4">
+            <Camera className="w-3.5 h-3.5 text-amber-700" />
             <span>Atmosphere &amp; Space</span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-5xl font-light text-white tracking-tight mb-4">
-            The Sensory <span className="italic text-gold-gradient">Environment</span>
+          <h2 className="font-serif text-3xl sm:text-5xl font-light text-stone-900 tracking-tight mb-4">
+            The Sensory <span className="italic text-gold-gradient font-normal">Environment</span>
           </h2>
-          <p className="text-stone-300 text-sm sm:text-base font-light">
+          <p className="text-stone-600 text-sm sm:text-base font-light">
             Step into our candlelit dining salons, subterranean wine vault, and dynamic kitchen
             theater. Designed to feel timeless, seductive, and warm.
           </p>
@@ -41,7 +41,7 @@ export default function GallerySection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
               onClick={() => setSelectedPhoto(item)}
-              className="relative h-72 sm:h-80 rounded-3xl overflow-hidden cursor-pointer group border border-white/5"
+              className="relative h-72 sm:h-80 rounded-3xl overflow-hidden cursor-pointer group border border-stone-200 shadow-sm hover:shadow-lg"
             >
               <Image
                 src={item.image}
@@ -53,16 +53,16 @@ export default function GallerySection() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent opacity-80 group-hover:opacity-95 transition-opacity" />
 
               {/* Hover icon */}
-              <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/50 backdrop-blur-md border border-white/10 flex items-center justify-center text-stone-200 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/50 backdrop-blur-md border border-white/20 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <Maximize2 className="w-4 h-4 text-amber-300" />
               </div>
 
               {/* Caption */}
               <div className="absolute bottom-6 left-6 right-6">
-                <h3 className="font-serif text-xl text-stone-100 font-normal mb-1 group-hover:text-amber-300 transition-colors">
+                <h3 className="font-serif text-xl text-white font-normal mb-1 group-hover:text-amber-300 transition-colors">
                   {item.title}
                 </h3>
-                <p className="text-stone-400 text-xs font-light line-clamp-2 leading-relaxed">
+                <p className="text-stone-300 text-xs font-light line-clamp-2 leading-relaxed">
                   {item.caption}
                 </p>
               </div>
@@ -74,12 +74,12 @@ export default function GallerySection() {
       {/* Lightbox Modal */}
       <AnimatePresence>
         {selectedPhoto && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-lg">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="relative max-w-4xl w-full bg-[#121319] rounded-3xl overflow-hidden border border-amber-400/30 shadow-2xl"
+              className="relative max-w-4xl w-full bg-white rounded-3xl overflow-hidden border border-stone-200 shadow-2xl text-stone-900"
             >
               <button
                 onClick={() => setSelectedPhoto(null)}
@@ -98,10 +98,10 @@ export default function GallerySection() {
               </div>
 
               <div className="p-6 sm:p-8">
-                <h3 className="font-serif text-2xl text-stone-100 font-normal mb-2">
+                <h3 className="font-serif text-2xl text-stone-900 font-normal mb-2">
                   {selectedPhoto.title}
                 </h3>
-                <p className="text-stone-300 text-sm font-light leading-relaxed">
+                <p className="text-stone-600 text-sm font-light leading-relaxed">
                   {selectedPhoto.caption}
                 </p>
               </div>

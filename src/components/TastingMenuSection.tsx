@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Wine, GlassWater, ChevronRight, Award } from "lucide-react";
+import { Wine, GlassWater, ChevronRight, Award } from "lucide-react";
 import { TASTING_COURSES } from "@/data/restaurantData";
 
 export default function TastingMenuSection() {
@@ -32,22 +32,19 @@ export default function TastingMenuSection() {
   ];
 
   return (
-    <section id="tasting" className="py-24 sm:py-32 relative bg-black overflow-hidden">
-      {/* Ambient background glow */}
-      <div className="absolute top-1/4 left-1/3 w-96 h-96 bg-amber-600/10 rounded-full blur-[150px] pointer-events-none" />
-
+    <section id="tasting" className="py-24 sm:py-32 relative bg-[#faf9f6] overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-500/10 text-amber-300 text-xs uppercase tracking-[0.2em] font-medium mb-4">
-            <Award className="w-3.5 h-3.5 text-amber-400" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-600/30 bg-amber-500/10 text-amber-800 text-xs uppercase tracking-[0.16em] font-medium mb-4">
+            <Award className="w-3.5 h-3.5 text-amber-700" />
             <span>The Chef&apos;s Table</span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-5xl font-light text-white tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-5xl font-bold text-stone-900 tracking-tight mb-4">
             The Sensory Tasting{" "}
-            <span className="italic text-gold-gradient">Journey</span>
+            <span className="text-amber-800 font-semibold">Journey</span>
           </h2>
-          <p className="text-stone-300 text-sm sm:text-base font-light">
+          <p className="text-stone-600 text-sm sm:text-base">
             An orchestrated progression of contrasting temperatures, delicate textures, and
             sommelier-selected cellar pairings crafted for each seat.
           </p>
@@ -60,35 +57,35 @@ export default function TastingMenuSection() {
               key={tier.title}
               className={`relative rounded-3xl p-8 transition-all duration-300 ${
                 tier.popular
-                  ? "glass-panel border-2 border-amber-400/60 shadow-2xl shadow-amber-500/15"
-                  : "bg-stone-900/40 border border-stone-800 hover:border-amber-400/30"
+                  ? "bg-white border-2 border-amber-500 shadow-xl"
+                  : "bg-white border border-stone-200 shadow-sm hover:border-amber-400"
               }`}
             >
               {tier.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-amber-400 text-[#0d0e12] text-[11px] font-bold uppercase tracking-wider shadow-lg">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-amber-500 text-white text-[11px] font-bold uppercase tracking-wider shadow-md">
                   Most Beloved Experience
                 </div>
               )}
-              <h3 className="font-serif text-2xl text-stone-100 mb-2">{tier.title}</h3>
+              <h3 className="text-xl font-bold text-stone-900 mb-2">{tier.title}</h3>
               <div className="flex items-baseline gap-2 mb-3">
-                <span className="font-serif text-4xl font-bold text-amber-300">
+                <span className="text-3xl sm:text-4xl font-bold text-stone-900">
                   ${tier.price}
                 </span>
-                <span className="text-stone-400 text-xs">/ guest</span>
+                <span className="text-stone-500 text-xs">/ guest</span>
               </div>
-              <div className="text-xs text-amber-400/80 mb-4 flex items-center gap-1.5">
-                <Wine className="w-3.5 h-3.5" />
+              <div className="text-xs text-amber-800 mb-4 flex items-center gap-1.5 font-medium">
+                <Wine className="w-3.5 h-3.5 text-amber-600" />
                 <span>{tier.wineTier}</span>
               </div>
-              <p className="text-stone-400 text-xs sm:text-sm font-light leading-relaxed mb-6">
+              <p className="text-stone-600 text-xs sm:text-sm leading-relaxed mb-6">
                 {tier.description}
               </p>
               <a
                 href="#reservation"
                 className={`w-full inline-flex items-center justify-center gap-2 py-3 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 ${
                   tier.popular
-                    ? "bg-amber-400 hover:bg-amber-300 text-black shadow-md"
-                    : "bg-stone-800 hover:bg-stone-700 text-stone-200"
+                    ? "bg-stone-900 hover:bg-amber-600 text-white shadow-md"
+                    : "bg-stone-100 hover:bg-stone-200 text-stone-800"
                 }`}
               >
                 <span>Reserve Experience</span>
@@ -99,7 +96,7 @@ export default function TastingMenuSection() {
         </div>
 
         {/* Interactive Course Progression Viewer */}
-        <div className="rounded-3xl glass-panel p-6 sm:p-10 border border-amber-400/20">
+        <div className="rounded-3xl bg-white p-6 sm:p-10 border border-stone-200 shadow-md">
           <div className="flex flex-col lg:flex-row gap-8 items-start">
             {/* Left Column: Course Selector Buttons */}
             <div className="w-full lg:w-1/3 flex flex-row lg:flex-col gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-none">
@@ -111,21 +108,21 @@ export default function TastingMenuSection() {
                     onClick={() => setActiveCourseIdx(idx)}
                     className={`text-left p-4 rounded-2xl transition-all duration-300 cursor-pointer flex-shrink-0 w-60 lg:w-full flex items-center justify-between border ${
                       isActive
-                        ? "bg-amber-500/15 border-amber-400/60 text-white shadow-lg"
-                        : "bg-stone-900/40 border-stone-800/80 text-stone-400 hover:text-stone-200 hover:bg-stone-900/80"
+                        ? "bg-amber-50/80 border-amber-600 text-stone-900 shadow-sm"
+                        : "bg-stone-50 border-stone-200 text-stone-600 hover:text-stone-900 hover:bg-stone-100"
                     }`}
                   >
                     <div>
-                      <div className="text-[10px] uppercase tracking-widest text-amber-400/80 font-mono">
+                      <div className="text-[10px] uppercase tracking-widest text-amber-800 font-mono font-medium">
                         Course {course.courseNumber} • {course.title}
                       </div>
-                      <div className="font-serif text-base text-stone-100 font-medium truncate">
+                      <div className="text-base text-stone-900 font-semibold truncate">
                         {course.dishName}
                       </div>
                     </div>
                     <div
                       className={`w-2 h-2 rounded-full ${
-                        isActive ? "bg-amber-400" : "bg-transparent"
+                        isActive ? "bg-amber-600" : "bg-transparent"
                       }`}
                     />
                   </button>
@@ -134,7 +131,7 @@ export default function TastingMenuSection() {
             </div>
 
             {/* Right Column: Detailed Animated Display of selected course */}
-            <div className="w-full lg:w-2/3 bg-stone-900/50 rounded-2xl p-6 sm:p-8 border border-stone-800 min-h-[300px] flex flex-col justify-between">
+            <div className="w-full lg:w-2/3 bg-[#faf9f6] rounded-2xl p-6 sm:p-8 border border-stone-200 min-h-[300px] flex flex-col justify-between">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={currentCourse.courseNumber}
@@ -144,37 +141,37 @@ export default function TastingMenuSection() {
                   transition={{ duration: 0.35 }}
                 >
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="px-3 py-1 rounded-full bg-amber-400/20 text-amber-300 text-xs font-mono uppercase tracking-wider">
+                    <span className="px-3 py-1 rounded-full bg-amber-500/15 text-amber-900 text-xs font-mono uppercase tracking-wider font-semibold">
                       Course 0{currentCourse.courseNumber}
                     </span>
-                    <span className="text-xs uppercase tracking-widest text-stone-400">
+                    <span className="text-xs uppercase tracking-widest text-stone-500 font-medium">
                       {currentCourse.title}
                     </span>
                   </div>
 
-                  <h3 className="font-serif text-2xl sm:text-3xl text-stone-100 font-normal mb-4">
+                  <h3 className="text-2xl sm:text-3xl text-stone-900 font-bold tracking-tight mb-4">
                     {currentCourse.dishName}
                   </h3>
 
-                  <p className="text-stone-300 text-sm sm:text-base leading-relaxed font-light mb-8">
+                  <p className="text-stone-600 text-sm sm:text-base leading-relaxed mb-8">
                     {currentCourse.description}
                   </p>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-stone-800/80">
-                    <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20">
-                      <div className="flex items-center gap-2 text-amber-400 text-xs uppercase tracking-wider font-medium mb-1">
-                        <Wine className="w-4 h-4" /> Sommelier Pairing
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-6 border-t border-stone-200">
+                    <div className="p-4 rounded-xl bg-white border border-amber-200">
+                      <div className="flex items-center gap-2 text-amber-800 text-xs uppercase tracking-wider font-medium mb-1">
+                        <Wine className="w-4 h-4 text-amber-700" /> Sommelier Pairing
                       </div>
-                      <div className="text-stone-200 text-sm font-serif">
+                      <div className="text-stone-900 text-sm font-semibold">
                         {currentCourse.winePairing}
                       </div>
                     </div>
 
-                    <div className="p-4 rounded-xl bg-stone-800/40 border border-stone-700/50">
-                      <div className="flex items-center gap-2 text-stone-400 text-xs uppercase tracking-wider font-medium mb-1">
-                        <GlassWater className="w-4 h-4 text-amber-400" /> Terroir & Origin
+                    <div className="p-4 rounded-xl bg-white border border-stone-200">
+                      <div className="flex items-center gap-2 text-stone-500 text-xs uppercase tracking-wider font-medium mb-1">
+                        <GlassWater className="w-4 h-4 text-amber-600" /> Terroir &amp; Origin
                       </div>
-                      <div className="text-stone-200 text-sm font-serif">
+                      <div className="text-stone-900 text-sm font-semibold">
                         {currentCourse.origin}
                       </div>
                     </div>

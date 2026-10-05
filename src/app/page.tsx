@@ -17,11 +17,11 @@ import CartDrawer from "@/components/CartDrawer";
 export default function Home() {
   return (
     <CartProvider>
-      <div className="relative min-h-screen bg-black text-[#f6f5f1] overflow-x-hidden selection:bg-amber-400/25 selection:text-amber-200">
+      <div className="relative min-h-screen bg-white text-stone-900 overflow-x-hidden selection:bg-amber-100 selection:text-amber-900">
         <Navbar />
         <main>
           {/* Text-Free Fullscreen Video Hero Section */}
-          <ScrollVideoHero videoSrc="/burger.mp4" />
+          <ScrollVideoHero videoSrc="/burger3.mp4" />
 
           {/* Restaurant Experience Sections */}
           <AboutSection />

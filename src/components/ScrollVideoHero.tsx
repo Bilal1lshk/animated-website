@@ -1,17 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
+import React, { useEffect, useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { ChevronDown, Sparkles, Utensils, Calendar } from "lucide-react";
 
 export interface ScrollVideoHeroProps {
   /**
-   * Path to your video file in the public directory (defaults to "/burger.mp4")
+   * Path to your video file in the public directory (defaults to "/burger3.mp4")
    */
   videoSrc?: string;
   posterSrc?: string;
@@ -19,157 +14,215 @@ export interface ScrollVideoHeroProps {
 }
 
 export default function ScrollVideoHero({
-  videoSrc = "/burger.mp4",
+  videoSrc = "/burger3.mp4",
   posterSrc,
   className = "",
 }: ScrollVideoHeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [isVideoReady, setIsVideoReady] = useState(false);
+  const hasStartedRef = useRef(false);
+
+  // Vertical scroll tracking across 320vh
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  // Video subtle zoom in at the start of scrolling (from 1.0 to 1.12)
+  const videoScale = useTransform(scrollYProgress, [0, 0.30], [1.0, 1.12]);
+
+  // Scene 1: Slides in from LEFT (0.00 -> 0.30)
+  const scene1Opacity = useTransform(scrollYProgress, [0, 0.08, 0.22, 0.32], [0.8, 1, 1, 0]);
+  const scene1X = useTransform(scrollYProgress, [0, 0.08, 0.24, 0.32], [-70, 0, 0, -90]);
+
+  // Scene 2: Slides in from RIGHT (0.33 -> 0.66)
+  const scene2Opacity = useTransform(scrollYProgress, [0.32, 0.42, 0.58, 0.67], [0, 1, 1, 0]);
+  const scene2X = useTransform(scrollYProgress, [0.32, 0.42, 0.58, 0.67], [90, 0, 0, 90]);
+
+  // Scene 3: Slides in from LEFT with CTAs (0.68 -> 1.00)
+  const scene3Opacity = useTransform(scrollYProgress, [0.68, 0.78, 0.95, 1.0], [0, 1, 1, 1]);
+  const scene3X = useTransform(scrollYProgress, [0.68, 0.78], [-90, 0]);
+
+  // Progress Bar / Indicator
+  const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (video && video.readyState >= 1) {
-      setIsVideoReady(true);
-    }
-  }, []);
+    if (!video) return;
 
-  useEffect(() => {
-    const video = videoRef.current;
-    const container = containerRef.current;
-    if (!video || !container) return;
+    // Normal natural 1.0x playback speed
+    video.playbackRate = 1.0;
+    video.muted = true;
 
-    // 1. Smooth, slow Lenis scrolling
-    let lenis: Lenis | null = null;
-    let tickerHandler: ((time: number) => void) | null = null;
+    // Start video on user scroll (wheel, touch, or window scroll)
+    const startVideoOnScroll = () => {
+      if (!hasStartedRef.current && video) {
+        hasStartedRef.current = true;
+        video.play().catch(() => {});
+      }
+    };
 
-    if (typeof window !== "undefined") {
-      lenis = new Lenis({
-        duration: 1.4,
-        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        smoothWheel: true,
-        wheelMultiplier: 0.9,
-      });
+    window.addEventListener("scroll", startVideoOnScroll, { passive: true });
+    window.addEventListener("wheel", startVideoOnScroll, { passive: true });
+    window.addEventListener("touchmove", startVideoOnScroll, { passive: true });
 
-      lenis.on("scroll", ScrollTrigger.update);
-      tickerHandler = (time: number) => {
-        lenis?.raf(time * 1000);
-      };
-      gsap.ticker.add(tickerHandler);
-      gsap.ticker.lagSmoothing(0);
-    }
-
-    video.pause();
-    video.currentTime = 0;
-
-    let stopTimeout: NodeJS.Timeout | null = null;
-    let isReversing = false;
-    let reverseRaf: number | null = null;
-
-    // 2. Hardware-Accelerated Smooth Playback Engine:
-    // Instead of forcing video.currentTime every 16ms (which causes browser decoder lag),
-    // we let the video play naturally with GPU acceleration and dynamically steer playbackRate!
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: container,
-        start: "top top",
-        end: "+=1900", // Pinned distance to display burger cleanly
-        pin: true,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          if (!video.duration || isNaN(video.duration)) return;
-
-          const targetTime = self.progress * video.duration;
-          const timeDiff = targetTime - video.currentTime;
-
-          // Clear any pending pause
-          if (stopTimeout) clearTimeout(stopTimeout);
-
-          // Moving Forward
-          if (self.direction === 1) {
-            isReversing = false;
-            if (reverseRaf) cancelAnimationFrame(reverseRaf);
-
-            // Dynamically adjust playback rate to sync with scroll speed smoothly
-            if (timeDiff > 0.4) {
-              video.playbackRate = 1.5;
-            } else if (timeDiff > 0.1) {
-              video.playbackRate = 1.15;
-            } else if (timeDiff < -0.1) {
-              video.playbackRate = 0.8;
-            } else {
-              video.playbackRate = 1.0;
-            }
-
-            if (video.paused && video.currentTime < video.duration - 0.05) {
+    // Intersection observer to pause offscreen, play when in view
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Auto play while in view once scrolling has initiated
+            if (hasStartedRef.current) {
               video.play().catch(() => {});
             }
-
-            // Pause gently when scrolling stops after 180ms
-            stopTimeout = setTimeout(() => {
-              video.pause();
-            }, 180);
-          }
-          // Moving Backward
-          else if (self.direction === -1) {
+          } else {
             video.pause();
-
-            if (!isReversing) {
-              isReversing = true;
-              const stepBack = () => {
-                if (video.currentTime > targetTime + 0.04) {
-                  video.currentTime = Math.max(0, video.currentTime - 0.06);
-                  reverseRaf = requestAnimationFrame(stepBack);
-                } else {
-                  isReversing = false;
-                }
-              };
-              reverseRaf = requestAnimationFrame(stepBack);
-            }
           }
-        },
-        onLeave: () => {
-          video.pause();
-        },
-        onLeaveBack: () => {
-          video.pause();
-          video.currentTime = 0;
-        },
-      });
-    }, container);
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current);
+    }
 
     return () => {
-      if (stopTimeout) clearTimeout(stopTimeout);
-      if (reverseRaf) cancelAnimationFrame(reverseRaf);
-      ctx.revert();
-      if (tickerHandler) gsap.ticker.remove(tickerHandler);
-      lenis?.destroy();
+      window.removeEventListener("scroll", startVideoOnScroll);
+      window.removeEventListener("wheel", startVideoOnScroll);
+      window.removeEventListener("touchmove", startVideoOnScroll);
+      observer.disconnect();
     };
-  }, [isVideoReady]);
+  }, []);
 
   return (
     <section
       ref={containerRef}
-      className={`relative w-full h-screen overflow-hidden flex items-center justify-center bg-black select-none ${className}`}
-      style={{ backgroundColor: "#000000" }}
+      className={`relative w-full h-[320vh] bg-[#E5E5E5] ${className}`}
+      style={{ backgroundColor: "#E5E5E5" }}
     >
-      <div className="relative w-full h-full flex items-center justify-center bg-black">
-        <video
-          ref={videoRef}
-          src={videoSrc}
-          poster={posterSrc}
-          playsInline
-          muted
-          preload="auto"
-          onLoadedMetadata={() => setIsVideoReady(true)}
-          onCanPlay={() => setIsVideoReady(true)}
-          className="w-full h-full object-contain block will-change-transform bg-black"
-          style={{ backgroundColor: "#000000" }}
+      {/* Sticky Viewport Stage */}
+      <div
+        className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center bg-[#E5E5E5]"
+        style={{ backgroundColor: "#E5E5E5" }}
+      >
+        {/* Background & Centered Video with Start-of-Scroll Zoom anchored to top of div / end of nav */}
+        <motion.div
+          style={{ scale: videoScale, transformOrigin: "top center" }}
+          className="absolute inset-0 flex items-center justify-center bg-[#E5E5E5] will-change-transform origin-top"
         >
-          <source src={videoSrc} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+          <video
+            ref={videoRef}
+            src={videoSrc}
+            poster={posterSrc}
+            playsInline
+            muted
+            loop
+            preload="auto"
+            className="w-full h-full object-contain block bg-[#E5E5E5] origin-top"
+            style={{ backgroundColor: "#E5E5E5", transformOrigin: "top center" }}
+          >
+            <source src={videoSrc} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </motion.div>
+
+        {/* Text Overlays: Positioned on Left and Right (Not directly blocking burger video) */}
+        <div className="relative z-10 w-full h-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pointer-events-none flex items-center">
+          {/* Scene 1: Introduction (From LEFT) */}
+          <motion.div
+            style={{ opacity: scene1Opacity, x: scene1X }}
+            className="absolute left-6 sm:left-10 lg:left-16 top-1/2 -translate-y-1/2 w-[85%] max-w-sm sm:max-w-md text-left z-10"
+          >
+            <div className="backdrop-blur-md bg-[#E5E5E5]/80 border border-stone-300/80 p-6 sm:p-8 rounded-2xl shadow-xs">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-900/5 border border-stone-900/10 text-stone-700 text-xs font-medium uppercase tracking-[0.16em] mb-4">
+                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                <span>Craft Burgers</span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-stone-900 leading-[1.12] mb-3">
+                Crafted Fresh <br />
+                <span className="text-amber-800 font-semibold">Every Single Day</span>
+              </h1>
+              <p className="text-stone-600 text-xs sm:text-sm md:text-base leading-relaxed mb-6">
+                Flame-grilled beef, warm toasted brioche, and house-made signature sauce.
+              </p>
+              <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-widest text-stone-500 animate-bounce">
+                <span>Scroll down</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Scene 2: Craft & Ingredients (From RIGHT) */}
+          <motion.div
+            style={{ opacity: scene2Opacity, x: scene2X }}
+            className="absolute right-6 sm:right-10 lg:right-16 top-1/2 -translate-y-1/2 w-[85%] max-w-sm sm:max-w-md text-left z-10"
+          >
+            <div className="backdrop-blur-md bg-[#E5E5E5]/80 border border-stone-300/80 p-6 sm:p-8 rounded-2xl shadow-xs">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-900/5 border border-stone-900/10 text-stone-700 text-xs font-medium uppercase tracking-[0.16em] mb-4">
+                <Utensils className="w-3.5 h-3.5 text-amber-600" />
+                <span>Prime Ingredients</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-stone-900 leading-[1.12] mb-3">
+                100% Prime Beef <br />
+                <span className="text-amber-800 font-semibold">&amp; Real Embers</span>
+              </h2>
+              <p className="text-stone-600 text-xs sm:text-sm md:text-base leading-relaxed">
+                Charcoal-seared beef patty topped with aged cheddar, crisp lettuce, and caramelized sweet onions.
+              </p>
+            </div>
+          </motion.div>
+
+          {/* Scene 3: Grand Tasting & CTA (From LEFT) */}
+          <motion.div
+            style={{ opacity: scene3Opacity, x: scene3X }}
+            className="absolute left-6 sm:left-10 lg:left-16 top-1/2 -translate-y-1/2 w-[85%] max-w-sm sm:max-w-md text-left z-10 pointer-events-auto"
+          >
+            <div className="backdrop-blur-md bg-[#E5E5E5]/80 border border-stone-300/80 p-6 sm:p-8 rounded-2xl shadow-xs">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-900/5 border border-stone-900/10 text-stone-700 text-xs font-medium uppercase tracking-[0.16em] mb-4">
+                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+                <span>Visit Us</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-stone-900 leading-[1.12] mb-3">
+                Taste the <br />
+                <span className="text-amber-800 font-semibold">Difference</span>
+              </h2>
+              <p className="text-stone-600 text-xs sm:text-sm md:text-base leading-relaxed mb-6">
+                Reserve your table in seconds or explore our complete menu below.
+              </p>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                <a
+                  href="#reservation"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-stone-800 shadow-md transition-all duration-300 cursor-pointer text-center"
+                >
+                  <Calendar className="w-3.5 h-3.5" />
+                  <span>Book Table</span>
+                </a>
+                <a
+                  href="#menu"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-stone-800 bg-white/90 hover:bg-white border border-stone-300 shadow-xs transition-all duration-300 cursor-pointer text-center"
+                >
+                  <Utensils className="w-3.5 h-3.5" />
+                  <span>View Menu</span>
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Vertical Scroll Progress Bar (Right Side) */}
+        <div className="hidden lg:flex absolute right-6 top-1/2 -translate-y-1/2 flex-col items-center gap-3 z-20 pointer-events-none">
+          <span className="text-[10px] font-mono tracking-widest text-stone-500 uppercase">01</span>
+          <div className="w-[2px] h-24 bg-stone-300 rounded-full overflow-hidden">
+            <motion.div
+              style={{ height: progressHeight }}
+              className="w-full bg-stone-800 origin-top"
+            />
+          </div>
+          <span className="text-[10px] font-mono tracking-widest text-stone-500 uppercase">03</span>
+        </div>
       </div>
     </section>
   );
 }
+

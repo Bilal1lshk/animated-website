@@ -1,27 +1,36 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-serif: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
 @layer base {
   :root {
-    --background: #000000;
-    --foreground: #f6f5f1;
-    --card: #0c0c0e;
-    --card-border: rgba(255, 255, 255, 0.08);
-    --gold: #d4af37;
-    --gold-light: #f3e5ab;
-    --gold-dark: #aa820a;
-    --gold-glow: rgba(212, 175, 55, 0.25);
+    --background: #ffffff;
+    --foreground: #1c1917;
+    --card: #ffffff;
+    --card-border: rgba(0, 0, 0, 0.08);
+    --gold: #b48c1e;
+    --gold-light: #fef08a;
+    --gold-dark: #854d0e;
+    --gold-glow: rgba(180, 140, 30, 0.2);
   }
 
   html {
     scroll-behavior: smooth;
-    color-scheme: dark;
-    background-color: #000000;
+    color-scheme: light;
+    background-color: #ffffff;
+    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
 
   body {
-    background-color: #000000;
+    background-color: #ffffff;
     color: var(--foreground);
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
 
@@ -30,14 +39,14 @@
     width: 8px;
   }
   ::-webkit-scrollbar-track {
-    background: #000000;
+    background: #ffffff;
   }
   ::-webkit-scrollbar-thumb {
-    background: #222226;
+    background: #e2e8f0;
     border-radius: 4px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #d4af37;
+    background: #b48c1e;
   }
 }
 
@@ -46,27 +55,18 @@
     transform: translateY(0px) rotate(0deg);
   }
   50% {
-    transform: translateY(-10px) rotate(1deg);
+    transform: translateY(-8px) rotate(0.8deg);
   }
 }
 
 @keyframes pulseGlow {
   0%, 100% {
-    opacity: 0.4;
+    opacity: 0.3;
     transform: scale(1);
   }
   50% {
-    opacity: 0.7;
-    transform: scale(1.05);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
+    opacity: 0.6;
+    transform: scale(1.04);
   }
 }
 
@@ -79,18 +79,19 @@
 }
 
 .text-gold-gradient {
-  background: linear-gradient(135deg, #fceabb 0%, #f8b500 50%, #e7c96a 100%);
+  background: linear-gradient(135deg, #b48c1e 0%, #ca8a04 50%, #9a3412 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .gold-border-glow {
-  box-shadow: 0 0 25px -5px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 0 25px -5px rgba(180, 140, 30, 0.18);
 }
 
 .glass-panel {
-  background: rgba(14, 14, 16, 0.85);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06);
 }

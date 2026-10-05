@@ -11,9 +11,8 @@ import {
   Wine,
   Sparkles,
   Flame,
-  Leaf,
 } from "lucide-react";
-import { MENU_ITEMS, MenuItem } from "@/data/restaurantData";
+import { MENU_ITEMS } from "@/data/restaurantData";
 import { useCart } from "@/context/CartContext";
 
 type CategoryFilter = "all" | "starters" | "mains" | "pasta" | "grill" | "desserts" | "drinks";
@@ -58,22 +57,19 @@ export default function MenuSection() {
   }, [selectedCategory, searchQuery, dietaryFilter]);
 
   return (
-    <section id="menu" className="py-24 sm:py-32 relative bg-black overflow-hidden">
-      {/* Background Ambient Glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-amber-500/5 rounded-full blur-[160px] pointer-events-none" />
-
+    <section id="menu" className="py-24 sm:py-32 relative bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-400/30 bg-amber-500/10 text-amber-300 text-xs uppercase tracking-[0.2em] font-medium mb-4">
-            <Utensils className="w-3.5 h-3.5 text-amber-400" />
-            <span>À La Carte & Curations</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-600/30 bg-amber-500/10 text-amber-800 text-xs uppercase tracking-[0.16em] font-medium mb-4">
+            <Utensils className="w-3.5 h-3.5 text-amber-700" />
+            <span>À La Carte &amp; Curations</span>
           </div>
-          <h2 className="font-serif text-3xl sm:text-5xl font-light text-white tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-5xl font-bold text-stone-900 tracking-tight mb-4">
             The Autumn Gastronomy{" "}
-            <span className="italic text-gold-gradient">Collection</span>
+            <span className="text-amber-800 font-semibold">Collection</span>
           </h2>
-          <p className="text-stone-300 text-sm sm:text-base font-light">
+          <p className="text-stone-600 text-sm sm:text-base">
             Every dish is conceptualized around peak-season provenance, cooked with elemental flame,
             and plated with surgical precision.
           </p>
@@ -91,8 +87,8 @@ export default function MenuSection() {
                   onClick={() => setSelectedCategory(cat.key)}
                   className={`px-5 py-2.5 rounded-full text-xs font-medium uppercase tracking-wider whitespace-nowrap transition-all duration-300 cursor-pointer ${
                     active
-                      ? "bg-amber-400 text-[#0d0e12] font-semibold shadow-lg shadow-amber-500/20 scale-105"
-                      : "bg-stone-900/60 text-stone-300 hover:text-white hover:bg-stone-800 border border-stone-800"
+                      ? "bg-stone-900 text-white font-semibold shadow-md scale-105"
+                      : "bg-stone-100 text-stone-700 hover:text-stone-900 hover:bg-stone-200 border border-stone-200"
                   }`}
                 >
                   {cat.label}
@@ -102,10 +98,10 @@ export default function MenuSection() {
           </div>
 
           {/* Secondary Filter: Search & Dietary Filter Pills */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-stone-800/60">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-stone-200">
             {/* Dietary Filter */}
             <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-1 sm:pb-0">
-              <span className="text-xs text-stone-400 uppercase tracking-widest hidden md:inline mr-1">
+              <span className="text-xs text-stone-500 uppercase tracking-widest hidden md:inline mr-1">
                 Filter:
               </span>
               {dietaryOptions.map((opt) => (
@@ -114,8 +110,8 @@ export default function MenuSection() {
                   onClick={() => setDietaryFilter(opt.key)}
                   className={`text-xs px-3 py-1.5 rounded-lg border transition-colors cursor-pointer whitespace-nowrap ${
                     dietaryFilter === opt.key
-                      ? "border-amber-400/80 bg-amber-500/15 text-amber-300"
-                      : "border-stone-800 bg-stone-900/40 text-stone-400 hover:text-stone-200"
+                      ? "border-amber-600 bg-amber-50 text-amber-900 font-medium"
+                      : "border-stone-200 bg-stone-50 text-stone-600 hover:text-stone-900"
                   }`}
                 >
                   {opt.label}
@@ -131,12 +127,12 @@ export default function MenuSection() {
                 placeholder="Search dish or ingredient..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 bg-stone-900/60 border border-stone-800 rounded-full text-xs text-stone-200 placeholder:text-stone-400 focus:outline-none focus:border-amber-400/60 transition-colors"
+                className="w-full pl-10 pr-4 py-2 bg-stone-50 border border-stone-200 rounded-full text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 transition-colors"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-white text-xs"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-700 text-xs"
                 >
                   Clear
                 </button>
@@ -147,16 +143,16 @@ export default function MenuSection() {
 
         {/* Menu Cards Grid */}
         {filteredItems.length === 0 ? (
-          <div className="text-center py-20 bg-stone-900/30 rounded-3xl border border-stone-800/60">
+          <div className="text-center py-20 bg-stone-50 rounded-3xl border border-stone-200">
             <Utensils className="w-10 h-10 text-stone-400 mx-auto mb-4" />
-            <p className="text-stone-300 font-serif text-lg">No dishes found matching your criteria.</p>
+            <p className="text-stone-700 font-serif text-lg">No dishes found matching your criteria.</p>
             <button
               onClick={() => {
                 setSelectedCategory("all");
                 setDietaryFilter("all");
                 setSearchQuery("");
               }}
-              className="mt-4 text-xs uppercase tracking-wider text-amber-400 hover:text-amber-300 underline"
+              className="mt-4 text-xs uppercase tracking-wider text-amber-700 hover:text-amber-800 underline"
             >
               Reset all filters
             </button>
@@ -175,7 +171,7 @@ export default function MenuSection() {
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
                   transition={{ duration: 0.4 }}
-                  className="group rounded-3xl glass-panel border border-stone-800/80 hover:border-amber-400/40 transition-all duration-500 overflow-hidden flex flex-col justify-between hover:shadow-2xl hover:shadow-amber-500/10 hover:-translate-y-1"
+                  className="group rounded-3xl bg-white border border-stone-200/90 hover:border-amber-500/50 transition-all duration-500 overflow-hidden flex flex-col justify-between hover:shadow-xl hover:-translate-y-1 shadow-sm"
                 >
                   <div>
                     {/* Dish Image Banner */}
@@ -187,19 +183,19 @@ export default function MenuSection() {
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-cover group-hover:scale-108 transition-transform duration-700 ease-out"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#15161d] via-black/30 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
                       {/* Tag Badges */}
                       <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
                         {item.isChefSpecial && (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-amber-400 text-black shadow-md">
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-amber-500 text-white shadow-md">
                             <Sparkles className="w-3 h-3" /> Special
                           </span>
                         )}
                         {item.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider bg-black/60 backdrop-blur-md border border-white/10 text-stone-200"
+                            className="px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider bg-black/60 backdrop-blur-md border border-white/20 text-white"
                           >
                             {tag}
                           </span>
@@ -207,26 +203,26 @@ export default function MenuSection() {
                       </div>
 
                       {/* Price Pill */}
-                      <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-[#0d0e12]/85 backdrop-blur-md border border-amber-400/30 text-amber-300 font-serif text-lg font-bold">
+                      <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md border border-stone-200 text-stone-900 text-base font-bold shadow-xs">
                         ${item.price}
                       </div>
                     </div>
 
                     {/* Dish Info Content */}
                     <div className="p-6">
-                      <h3 className="font-serif text-xl text-stone-100 font-medium group-hover:text-amber-200 transition-colors mb-2">
+                      <h3 className="text-lg text-stone-900 font-semibold group-hover:text-amber-700 transition-colors mb-2">
                         {item.name}
                       </h3>
-                      <p className="text-stone-400 text-xs sm:text-sm font-light leading-relaxed mb-4">
+                      <p className="text-stone-600 text-xs sm:text-sm leading-relaxed mb-4">
                         {item.description}
                       </p>
 
-                      {/* Wine Pairing recommendation if present */}
+                      {/* Wine Pairing recommendation */}
                       {item.winePairing && (
-                        <div className="p-2.5 rounded-xl bg-amber-500/5 border border-amber-500/15 mb-4 flex items-start gap-2 text-xs text-amber-300/80">
-                          <Wine className="w-3.5 h-3.5 flex-shrink-0 text-amber-400 mt-0.5" />
+                        <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200/80 mb-4 flex items-start gap-2 text-xs text-amber-900">
+                          <Wine className="w-3.5 h-3.5 flex-shrink-0 text-amber-700 mt-0.5" />
                           <span className="leading-tight">
-                            <strong className="text-amber-200 font-normal">Sommelier Note:</strong>{" "}
+                            <strong className="text-amber-800 font-medium">Sommelier Note:</strong>{" "}
                             {item.winePairing}
                           </span>
                         </div>
@@ -235,11 +231,11 @@ export default function MenuSection() {
                   </div>
 
                   {/* Card Footer: Metadata & Add Button */}
-                  <div className="px-6 pb-6 pt-2 border-t border-stone-800/80 flex items-center justify-between">
-                    <div className="flex items-center gap-3 text-[11px] text-stone-400">
+                  <div className="px-6 pb-6 pt-3 border-t border-stone-100 flex items-center justify-between">
+                    <div className="flex items-center gap-3 text-[11px] text-stone-500">
                       {item.prepTime && (
                         <span className="flex items-center gap-1">
-                          <Flame className="w-3 h-3 text-amber-500" />
+                          <Flame className="w-3 h-3 text-amber-600" />
                           {item.prepTime}
                         </span>
                       )}
@@ -250,8 +246,8 @@ export default function MenuSection() {
                       onClick={() => addToCart(item)}
                       className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                         recentlyAddedId === item.id
-                          ? "bg-emerald-500 text-white"
-                          : "bg-amber-400 hover:bg-amber-300 text-black shadow-md hover:shadow-amber-500/20"
+                          ? "bg-emerald-600 text-white"
+                          : "bg-stone-900 hover:bg-amber-600 text-white shadow-sm"
                       }`}
                     >
                       {recentlyAddedId === item.id ? (
