@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ChevronDown, Sparkles, Utensils, Calendar } from "lucide-react";
+import { ChevronDown, Sparkles, Utensils, ShoppingBag } from "lucide-react";
 
 export interface ScrollVideoHeroProps {
   /**
@@ -135,10 +135,6 @@ export default function ScrollVideoHero({
             className="absolute left-6 sm:left-10 lg:left-16 top-1/2 -translate-y-1/2 w-[85%] max-w-sm sm:max-w-md text-left z-10"
           >
             <div className="backdrop-blur-md bg-[#E5E5E5]/80 border border-stone-300/80 p-6 sm:p-8 rounded-2xl shadow-xs">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-900/5 border border-stone-900/10 text-stone-700 text-xs font-medium uppercase tracking-[0.16em] mb-4">
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                <span>Craft Burgers</span>
-              </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-stone-900 leading-[1.12] mb-3">
                 Crafted Fresh <br />
                 <span className="text-amber-800 font-semibold">Every Single Day</span>
@@ -159,10 +155,6 @@ export default function ScrollVideoHero({
             className="absolute right-6 sm:right-10 lg:right-16 top-1/2 -translate-y-1/2 w-[85%] max-w-sm sm:max-w-md text-left z-10"
           >
             <div className="backdrop-blur-md bg-[#E5E5E5]/80 border border-stone-300/80 p-6 sm:p-8 rounded-2xl shadow-xs">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-900/5 border border-stone-900/10 text-stone-700 text-xs font-medium uppercase tracking-[0.16em] mb-4">
-                <Utensils className="w-3.5 h-3.5 text-amber-600" />
-                <span>Prime Ingredients</span>
-              </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-stone-900 leading-[1.12] mb-3">
                 100% Prime Beef <br />
                 <span className="text-amber-800 font-semibold">&amp; Real Embers</span>
@@ -179,24 +171,20 @@ export default function ScrollVideoHero({
             className="absolute left-6 sm:left-10 lg:left-16 top-1/2 -translate-y-1/2 w-[85%] max-w-sm sm:max-w-md text-left z-10 pointer-events-auto"
           >
             <div className="backdrop-blur-md bg-[#E5E5E5]/80 border border-stone-300/80 p-6 sm:p-8 rounded-2xl shadow-xs">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-stone-900/5 border border-stone-900/10 text-stone-700 text-xs font-medium uppercase tracking-[0.16em] mb-4">
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                <span>Visit Us</span>
-              </div>
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-stone-900 leading-[1.12] mb-3">
                 Taste the <br />
                 <span className="text-amber-800 font-semibold">Difference</span>
               </h2>
               <p className="text-stone-600 text-xs sm:text-sm md:text-base leading-relaxed mb-6">
-                Reserve your table in seconds or explore our complete menu below.
+                Order your favorites online for fast pickup or delivery.
               </p>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
                 <a
                   href="#reservation"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-stone-800 shadow-md transition-all duration-300 cursor-pointer text-center"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 shadow-md transition-all duration-300 cursor-pointer text-center"
                 >
-                  <Calendar className="w-3.5 h-3.5" />
-                  <span>Book Table</span>
+                  <ShoppingBag className="w-3.5 h-3.5" />
+                  <span>Order Online</span>
                 </a>
                 <a
                   href="#menu"

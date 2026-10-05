@@ -27,12 +27,12 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Simple clean max 4 navigation sections, concluding with Order & Booking
+  // Simple clean max 4 navigation sections, concluding with Order Booking
   const navLinks = [
     { label: "Story", href: "#about" },
     { label: "Menu", href: "#menu" },
     { label: "Combos", href: "#tasting" },
-    { label: "Book Table", href: "#reservation" },
+    { label: "Order Booking", href: "#reservation" },
   ];
 
   return (
@@ -98,12 +98,12 @@ export default function Navbar() {
               )}
             </button>
 
-            {/* Quick Order / Book Button */}
+            {/* Quick Order Button */}
             <a
               href="#reservation"
-              className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-stone-800 rounded-full shadow-xs hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
+              className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 rounded-full shadow-xs hover:scale-[1.02] active:scale-[0.98] transition-all duration-300"
             >
-              Book Table
+              Order Online
             </a>
 
             {/* Mobile Menu Button */}
@@ -134,7 +134,7 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-serif tracking-wide text-stone-900 hover:text-amber-700 transition-colors border-b border-stone-100 pb-3"
+                  className="text-base font-semibold tracking-wide text-stone-900 hover:text-amber-700 transition-colors border-b border-stone-100 pb-3"
                 >
                   {link.label}
                 </a>
@@ -143,9 +143,9 @@ export default function Navbar() {
                 <a
                   href="#reservation"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-stone-800 transition-all"
+                  className="w-full text-center py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 transition-all"
                 >
-                  Book Table / Order
+                  Order Booking
                 </a>
               </div>
             </div>

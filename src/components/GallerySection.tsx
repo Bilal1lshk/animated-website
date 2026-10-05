@@ -17,17 +17,12 @@ export default function GallerySection() {
     <section id="gallery" className="py-24 sm:py-32 relative bg-white overflow-hidden">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-600/30 bg-amber-500/10 text-amber-800 text-xs uppercase tracking-[0.2em] font-medium mb-4">
-            <Camera className="w-3.5 h-3.5 text-amber-700" />
-            <span>Atmosphere &amp; Space</span>
-          </div>
-          <h2 className="font-serif text-3xl sm:text-5xl font-light text-stone-900 tracking-tight mb-4">
-            The Sensory <span className="italic text-gold-gradient font-normal">Environment</span>
+        <div className="text-center max-w-2xl mx-auto mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 tracking-tight mb-3">
+            Photo Gallery
           </h2>
-          <p className="text-stone-600 text-sm sm:text-base font-light">
-            Step into our candlelit dining salons, subterranean wine vault, and dynamic kitchen
-            theater. Designed to feel timeless, seductive, and warm.
+          <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+            Take a look at our open flame grill, fresh prep stations, and dining space.
           </p>
         </div>
 
@@ -41,7 +36,7 @@ export default function GallerySection() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: idx * 0.1 }}
               onClick={() => setSelectedPhoto(item)}
-              className="relative h-72 sm:h-80 rounded-3xl overflow-hidden cursor-pointer group border border-stone-200 shadow-sm hover:shadow-lg"
+              className="relative h-72 sm:h-80 rounded-3xl overflow-hidden cursor-pointer group border border-stone-200 shadow-xs hover:shadow-lg"
             >
               <Image
                 src={item.image}
@@ -59,10 +54,10 @@ export default function GallerySection() {
 
               {/* Caption */}
               <div className="absolute bottom-6 left-6 right-6">
-                <h3 className="font-serif text-xl text-white font-normal mb-1 group-hover:text-amber-300 transition-colors">
+                <h3 className="text-lg text-white font-semibold mb-1 group-hover:text-amber-300 transition-colors">
                   {item.title}
                 </h3>
-                <p className="text-stone-300 text-xs font-light line-clamp-2 leading-relaxed">
+                <p className="text-stone-300 text-xs line-clamp-2 leading-relaxed">
                   {item.caption}
                 </p>
               </div>
@@ -83,7 +78,7 @@ export default function GallerySection() {
             >
               <button
                 onClick={() => setSelectedPhoto(null)}
-                className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md text-white flex items-center justify-center hover:bg-black transition-colors"
+                className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md text-white flex items-center justify-center hover:bg-black transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -98,10 +93,10 @@ export default function GallerySection() {
               </div>
 
               <div className="p-6 sm:p-8">
-                <h3 className="font-serif text-2xl text-stone-900 font-normal mb-2">
+                <h3 className="text-2xl text-stone-900 font-bold mb-2">
                   {selectedPhoto.title}
                 </h3>
-                <p className="text-stone-600 text-sm font-light leading-relaxed">
+                <p className="text-stone-600 text-sm leading-relaxed">
                   {selectedPhoto.caption}
                 </p>
               </div>

@@ -33,381 +33,475 @@ export interface TastingCourse {
 }
 
 export const RESTAURANT_INFO = {
-  name: "L'Étoile Dorée",
-  tagline: "Contemporary Haute Cuisine & Artisanal Wine Cellar",
-  address: "482 Boulevard Saint-Honoré, Paris & 740 Park Avenue, NY",
-  phone: "+1 (212) 555-8392",
-  email: "reservations@letoiledoree.com",
+  name: "The Golden Star",
+  tagline: "Craft Kitchen & Flame-Grilled Burgers",
+  address: "142 Market Street, Downtown",
+  phone: "+1 (555) 234-5678",
+  email: "hello@thegoldenstar.com",
   hours: {
-    lunch: "Tuesday – Sunday: 12:00 PM – 3:00 PM",
-    dinner: "Tuesday – Sunday: 6:00 PM – 11:30 PM",
-    closed: "Mondays (Private Culinary Masterclasses)",
+    lunch: "Monday – Sunday: 11:30 AM – 3:30 PM",
+    dinner: "Monday – Sunday: 5:00 PM – 11:00 PM",
+    closed: "Open 7 Days a Week",
   },
   stats: [
-    { label: "Michelin Accolade", value: "★★ Guide Selected" },
-    { label: "Wine Selections", value: "350+ Rare Vintages" },
-    { label: "Organic Sourcing", value: "100% Farm-to-Table" },
-    { label: "Guest Satisfaction", value: "4.9 / 5.0 (2,400+)" },
+    { label: "Fresh Daily", value: "100% Ground Fresh" },
+    { label: "Customer Rating", value: "4.9 / 5.0 (3,200+)" },
+    { label: "Flame Grilled", value: "Real Wood Embers" },
+    { label: "House Sauces", value: "Made Fresh Daily" },
   ],
 };
 
 export const MENU_ITEMS: MenuItem[] = [
-  // STARTERS
+  // SIDES & STARTERS (Simple Clean English)
   {
     id: "starter-1",
-    name: "Hokkaido Scallop Crudo",
+    name: "Crispy Truffle Fries",
     category: "starters",
-    price: 34,
+    price: 12,
     description:
-      "Hand-dived sea scallops, finger lime pearls, white truffle vinaigrette, pickled sea fennel & crispy nori tuile.",
+      "Golden shoestring fries tossed in white truffle oil, grated aged parmesan, and fresh chopped parsley.",
     image:
-      "https://images.unsplash.com/photo-1532550907401-a500c9a57435?auto=format&fit=crop&w=800&q=80",
-    tags: ["Gluten-Free", "Chef's Signature", "Seafood"],
+      "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=800&q=80",
+    tags: ["Vegetarian", "Popular"],
     isChefSpecial: true,
-    calories: 280,
-    prepTime: "12 mins",
-    winePairing: "Domaine Leflaive Puligny-Montrachet 2020",
+    calories: 380,
+    prepTime: "6 mins",
+    winePairing: "House Garlic Aioli",
   },
   {
     id: "starter-2",
-    name: "Foie Gras Poêlé au Miel",
+    name: "Loaded Bacon Cheese Fries",
     category: "starters",
-    price: 38,
+    price: 14,
     description:
-      "Pan-seared artisanal duck liver, caramelized mission figs, spiced brioche & aged Modena balsamic reduction.",
+      "Crispy french fries smothered in warm melted cheddar sauce, crispy smoked bacon bits, sour cream, and fresh scallions.",
     image:
-      "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
-    tags: ["Gourmet", "Signature"],
+      "https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=800&q=80",
+    tags: ["Loaded", "Customer Favorite"],
     isChefSpecial: true,
-    calories: 420,
-    prepTime: "15 mins",
-    winePairing: "Château d'Yquem Sauternes 2017",
+    calories: 580,
+    prepTime: "8 mins",
+    winePairing: "Cool Ranch Dip",
   },
   {
     id: "starter-3",
-    name: "Burrata Pugliese Truffée",
+    name: "Crispy Golden Onion Rings",
     category: "starters",
-    price: 28,
+    price: 10,
     description:
-      "24-hour aged heirloom tomatoes, black winter truffle caviar, basil sponge & cold-pressed Tuscan olive oil.",
+      "Thick-cut sweet onions in crunchy seasoned batter, fried until crisp and served with smoky house barbecue sauce.",
     image:
-      "https://images.unsplash.com/photo-1592417817098-8f3d6910985c?auto=format&fit=crop&w=800&q=80",
-    tags: ["Vegetarian", "Organic"],
+      "https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=800&q=80",
+    tags: ["Vegetarian", "Crispy"],
     calories: 340,
-    prepTime: "10 mins",
-    winePairing: "Gavi di Gavi La Scolca 2022",
+    prepTime: "6 mins",
+    winePairing: "Smoky BBQ Sauce",
   },
-
-  // MAINS
   {
-    id: "main-1",
-    name: "Pan-Roasted Glacier 51 Toothfish",
-    category: "mains",
-    price: 68,
+    id: "starter-4",
+    name: "Flame-Grilled BBQ Wings",
+    category: "starters",
+    price: 15,
     description:
-      "Known as the Wagyu of the sea. Served with sweet corn velouté, charred baby leeks, and saffron dashi foam.",
+      "Juicy chicken wings seared on the grill, tossed in sweet honey BBQ sauce, served with fresh celery sticks and ranch.",
     image:
-      "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?auto=format&fit=crop&w=800&q=80",
-    tags: ["Gluten-Free", "Chef's Signature"],
-    isChefSpecial: true,
+      "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?auto=format&fit=crop&w=800&q=80",
+    tags: ["Popular", "Gluten-Free"],
     calories: 520,
-    prepTime: "22 mins",
-    winePairing: "Chassagne-Montrachet Premier Cru 2019",
-  },
-  {
-    id: "main-2",
-    name: "Canard Rôti à l'Orange Sangvine",
-    category: "mains",
-    price: 54,
-    description:
-      "Crispy-skin dry-aged heritage duck breast, blood orange gastrique, parsnip mousseline & Romanesco florets.",
-    image:
-      "https://images.unsplash.com/photo-1514944298352-7b28dbb3a0f7?auto=format&fit=crop&w=800&q=80",
-    tags: ["Chef's Pick"],
-    calories: 610,
-    prepTime: "24 mins",
-    winePairing: "Domaine Dujac Morey-Saint-Denis 2018",
-  },
-  {
-    id: "main-3",
-    name: "Wild Morel & Porcini Risotto",
-    category: "pasta",
-    price: 42,
-    description:
-      "Carnaroli rice slow-cooked in forest mushroom consommé, 36-month Parmigiano Reggiano & shaved Alba white truffles.",
-    image:
-      "https://images.unsplash.com/photo-1633964913295-ceb43826e7c9?auto=format&fit=crop&w=800&q=80",
-    tags: ["Vegetarian", "Gluten-Free", "Truffle"],
-    isChefSpecial: true,
-    calories: 460,
-    prepTime: "20 mins",
-    winePairing: "Barolo Vietti Castiglione 2017",
+    prepTime: "12 mins",
+    winePairing: "Chilled Soda or Beer",
   },
 
-  // PASTA
-  {
-    id: "pasta-1",
-    name: "Lobster & Crab Handmade Agnolotti",
-    category: "pasta",
-    price: 48,
-    description:
-      "Silky pillow pasta filled with Maine lobster & king crab, coral shellfish emulsion, and Oscietra sturgeon caviar.",
-    image:
-      "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80",
-    tags: ["Artisanal", "Chef's Signature"],
-    isChefSpecial: true,
-    calories: 540,
-    prepTime: "18 mins",
-    winePairing: "Meursault Domaine des Comtes Lafon",
-  },
-  {
-    id: "pasta-2",
-    name: "Tagliolini al Tartufo Nero",
-    category: "pasta",
-    price: 44,
-    description:
-      "Fresh golden egg pasta, mountain churned Normandy butter, Pecorino Romano and freshly shaved Périgord black truffles.",
-    image:
-      "https://images.unsplash.com/photo-1621996346565-e3d5d6281691?auto=format&fit=crop&w=800&q=80",
-    tags: ["Vegetarian", "House Special"],
-    calories: 490,
-    prepTime: "16 mins",
-    winePairing: "Brunello di Montalcino Biondi-Santi",
-  },
-
-  // GRILL
+  // GRILL & BURGERS (Simple Clean English)
   {
     id: "grill-1",
-    name: "Miyazaki A5 Wagyu Tenderloin",
+    name: "Classic Cheeseburger",
     category: "grill",
-    price: 110,
+    price: 16,
     description:
-      "Authentic BMS 11 Japanese Wagyu, binchotan charcoal sear, bone marrow glaze, smoked shallot puree & smoked salt.",
+      "Flame-grilled prime beef patty, melted American cheddar, crisp lettuce, ripe tomato, pickles, and our signature burger sauce on a toasted brioche bun.",
     image:
-      "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80",
-    tags: ["Gluten-Free", "Prestige Cut"],
+      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80",
+    tags: ["Best Seller", "Signature"],
     isChefSpecial: true,
-    calories: 680,
-    prepTime: "25 mins",
-    winePairing: "Château Margaux Premier Grand Cru 2012",
+    calories: 620,
+    prepTime: "10 mins",
+    winePairing: "Craft Root Beer or Pale Ale",
   },
   {
     id: "grill-2",
-    name: "Colorado Rack of Lamb en Croûte",
+    name: "Double Smokehouse Burger",
     category: "grill",
-    price: 64,
+    price: 21,
     description:
-      "Herb-crusted spring lamb rack, rosemary-infused jus, braised baby artichokes, and roasted garlic potato purée.",
+      "Two flame-grilled beef patties, thick-cut applewood bacon, aged sharp cheddar, crispy onions, and sweet smoky BBQ sauce.",
+    image:
+      "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=800&q=80",
+    tags: ["Customer Favorite", "Double Patty"],
+    isChefSpecial: true,
+    calories: 840,
+    prepTime: "12 mins",
+    winePairing: "Vanilla Bean Shake",
+  },
+  {
+    id: "grill-3",
+    name: "Truffle Mushroom Swiss Burger",
+    category: "grill",
+    price: 19,
+    description:
+      "Grilled prime beef, sautéed garlic butter mushrooms, melted Swiss cheese, caramelized onions, and white truffle aioli.",
+    image:
+      "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80",
+    tags: ["Chef Special", "Truffle"],
+    isChefSpecial: true,
+    calories: 710,
+    prepTime: "12 mins",
+    winePairing: "Iced Caramel Tea",
+  },
+  {
+    id: "grill-4",
+    name: "Crispy Buttermilk Chicken Burger",
+    category: "grill",
+    price: 17,
+    description:
+      "Golden fried chicken breast, crunchy house slaw, bread & butter pickles, and honey mustard sauce on a warm brioche bun.",
+    image:
+      "https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=800&q=80",
+    tags: ["Crispy", "Poultry"],
+    calories: 650,
+    prepTime: "10 mins",
+    winePairing: "Fresh Mint Lemonade",
+  },
+  {
+    id: "grill-5",
+    name: "Spicy Jalapeño Smash Burger",
+    category: "grill",
+    price: 18,
+    description:
+      "Two smashed beef patties with crispy edges, pepper jack cheese, pickled jalapeño slices, and smoky chipotle mayo.",
+    image:
+      "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=800&q=80",
+    tags: ["Spicy", "Double Patty"],
+    calories: 740,
+    prepTime: "10 mins",
+    winePairing: "Chilled Craft Soda",
+  },
+  {
+    id: "grill-6",
+    name: "Plant-Based Garden Burger",
+    category: "grill",
+    price: 16,
+    description:
+      "Grilled plant-based patty, sliced avocado, baby arugula, fresh tomato, red onion, and herb vegan mayo on a multigrain bun.",
+    image:
+      "https://images.unsplash.com/photo-1520072959219-c595dc870360?auto=format&fit=crop&w=800&q=80",
+    tags: ["Vegetarian", "Plant-Based"],
+    calories: 490,
+    prepTime: "10 mins",
+    winePairing: "Sparkling Water with Lime",
+  },
+
+  // CHEF'S SPECIALS & MAINS
+  {
+    id: "main-1",
+    name: "Slow-Smoked BBQ Ribs",
+    category: "mains",
+    price: 28,
+    description:
+      "Tender baby back pork ribs slow-cooked for six hours, glazed in sweet brown sugar BBQ sauce, served with seasoned fries and slaw.",
     image:
       "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80",
-    tags: ["Gluten-Free"],
-    calories: 590,
-    prepTime: "25 mins",
-    winePairing: "Côte-Rôtie Guigal La Mouline",
+    tags: ["Chef Special", "Gluten-Free"],
+    isChefSpecial: true,
+    calories: 780,
+    prepTime: "15 mins",
+    winePairing: "Chilled Craft Lager",
+  },
+  {
+    id: "main-2",
+    name: "Flame-Grilled Ribeye Steak",
+    category: "mains",
+    price: 34,
+    description:
+      "10oz hand-cut prime ribeye grilled to perfection over oak embers, topped with garlic herb butter and rosemary roasted fries.",
+    image:
+      "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80",
+    tags: ["Prime Cut", "Gluten-Free"],
+    isChefSpecial: true,
+    calories: 720,
+    prepTime: "16 mins",
+    winePairing: "Iced Lemon Tea or Beer",
+  },
+
+  // PASTA & BOWLS
+  {
+    id: "pasta-1",
+    name: "Baked Four-Cheese Mac & Cheese",
+    category: "pasta",
+    price: 16,
+    description:
+      "Tender macaroni pasta in creamy cheddar, gouda, and mozzarella cheese sauce, finished with crispy garlic toasted breadcrumbs.",
+    image:
+      "https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&w=800&q=80",
+    tags: ["Vegetarian", "Comfort Food"],
+    isChefSpecial: true,
+    calories: 610,
+    prepTime: "10 mins",
+    winePairing: "Chilled Iced Tea",
+  },
+  {
+    id: "pasta-2",
+    name: "Creamy Garlic Parmesan Bowl",
+    category: "pasta",
+    price: 18,
+    description:
+      "Fresh pasta tossed with sautéed mushrooms, baby spinach, roasted garlic cream, and freshly shaved parmesan cheese.",
+    image:
+      "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80",
+    tags: ["Vegetarian"],
+    calories: 540,
+    prepTime: "12 mins",
+    winePairing: "Fresh Lemonade",
   },
 
   // DESSERTS
   {
     id: "dessert-1",
-    name: "Sphère Chocolat Valrhona & Or",
+    name: "Warm Chocolate Lava Cake",
     category: "desserts",
-    price: 26,
+    price: 12,
     description:
-      "70% Guanaja chocolate sphere, hazelnut praline crunch, warm Tahitian vanilla bean ganache poured tableside, 24K gold leaf.",
+      "Warm dark chocolate cake with a molten chocolate center, served with a scoop of Madagascar vanilla bean ice cream.",
     image:
       "https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=800&q=80",
-    tags: ["Vegetarian", "Chef's Signature"],
+    tags: ["Vegetarian", "Customer Favorite"],
     isChefSpecial: true,
-    calories: 480,
-    prepTime: "12 mins",
-    winePairing: "Taylor's 20 Year Old Tawny Port",
+    calories: 460,
+    prepTime: "8 mins",
+    winePairing: "Hot Fresh Coffee",
   },
   {
     id: "dessert-2",
-    name: "Mille-Feuille Croustillant Vanille",
+    name: "New York Strawberry Cheesecake",
     category: "desserts",
-    price: 22,
+    price: 11,
     description:
-      "Caramelized inverted puff pastry, whipped bourbon vanilla cream, wild raspberry gel & salted butter caramel.",
+      "Rich and creamy baked cheesecake on a golden graham cracker crust, topped with fresh strawberry sauce.",
     image:
-      "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80",
-    tags: ["Vegetarian", "Classic French"],
-    calories: 390,
-    prepTime: "10 mins",
-    winePairing: "Tokaji Aszú 5 Puttonyos 2016",
+      "https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=800&q=80",
+    tags: ["Vegetarian"],
+    calories: 410,
+    prepTime: "5 mins",
+    winePairing: "Iced Vanilla Latte",
   },
 
-  // DRINKS & COCKTAILS
+  // DRINKS & SHAKES
   {
     id: "drink-1",
-    name: "The Golden Empress Cocktail",
+    name: "Handspun Vanilla Milkshake",
     category: "drinks",
-    price: 25,
+    price: 8,
     description:
-      "Botanist Gin, elderflower liqueur, edible 24K gold dust, clarified lemon essence, topped with Dom Pérignon Champagne.",
+      "Spun with whole milk, real Madagascar vanilla ice cream, and finished with whipped cream and a cherry on top.",
     image:
-      "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=800&q=80",
-    tags: ["Cocktail", "Signature Drink"],
+      "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=800&q=80",
+    tags: ["Shake", "Classic"],
     isChefSpecial: true,
-    calories: 160,
-    prepTime: "5 mins",
+    calories: 360,
+    prepTime: "4 mins",
   },
   {
     id: "drink-2",
-    name: "Smoked Cherrywood Old Fashioned",
+    name: "Salted Caramel Pretzel Shake",
     category: "drinks",
-    price: 24,
+    price: 9,
     description:
-      "WhistlePig 10-Year Rye, organic demerara, angostura bitters, ignited cherrywood aromatics served under a smoke cloche.",
+      "Rich caramel shake with sea salt swirl, whipped cream, and crunchy crushed pretzel pieces on top.",
     image:
-      "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=800&q=80",
-    tags: ["Cocktail", "Smoked"],
-    calories: 190,
-    prepTime: "6 mins",
+      "https://images.unsplash.com/photo-1579954115545-a95591f28bfc?auto=format&fit=crop&w=800&q=80",
+    tags: ["Shake", "Popular"],
+    isChefSpecial: true,
+    calories: 420,
+    prepTime: "5 mins",
+  },
+  {
+    id: "drink-3",
+    name: "Fresh Mint Lemonade",
+    category: "drinks",
+    price: 6,
+    description:
+      "Freshly squeezed lemons, crushed garden mint leaves, and light cane sugar served over ice.",
+    image:
+      "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80",
+    tags: ["Refreshing", "Cold Drink"],
+    calories: 120,
+    prepTime: "3 mins",
+  },
+  {
+    id: "drink-4",
+    name: "Craft Root Beer Float",
+    category: "drinks",
+    price: 7,
+    description:
+      "Chilled artisanal draft root beer poured over two generous scoops of creamy vanilla bean ice cream.",
+    image:
+      "https://images.unsplash.com/photo-1541658016709-82535e94bc69?auto=format&fit=crop&w=800&q=80",
+    tags: ["Classic Float", "Refreshing"],
+    calories: 280,
+    prepTime: "3 mins",
   },
 ];
 
 export const TASTING_COURSES: TastingCourse[] = [
   {
     courseNumber: 1,
-    title: "L'Accueil",
-    dishName: "Amuse-Bouche & Caviar Tartlet",
+    title: "Starter",
+    dishName: "Crispy Truffle Shoestring Fries",
     description:
-      "Crisp tartlet with smoked crème fraîche, chive oil, and Royal Imperial Kaluga caviar.",
-    winePairing: "Champagne Krug Grande Cuvée 170th Edition",
-    origin: "Petrossian Caviar Reserve",
+      "Hot shoestring fries tossed in aromatic white truffle oil, grated aged parmesan, and chopped garden parsley.",
+    winePairing: "House Garlic Herb Dip",
+    origin: "Hand Cut Daily",
   },
   {
     courseNumber: 2,
-    title: "La Mer",
-    dishName: "Brittany Blue Lobster Bisque",
+    title: "Main Course",
+    dishName: "The Double Smokehouse Burger",
     description:
-      "Gentle steamed blue lobster tail, cognac scented bisque, kaffir lime and brioche croutons.",
-    winePairing: "Domaine Leflaive Batard-Montrachet Grand Cru 2018",
-    origin: "Brittany Coast, France",
+      "Two flame-grilled beef patties, crisp applewood bacon, aged sharp cheddar, crispy onions, and smoky BBQ sauce on toasted brioche.",
+    winePairing: "Craft Root Beer or Pale Ale",
+    origin: "100% Prime Beef",
   },
   {
     courseNumber: 3,
-    title: "La Terre",
-    dishName: "Périgord Truffle Agnolotti",
+    title: "Grill Side",
+    dishName: "Flame-Grilled Honey BBQ Wings",
     description:
-      "Silken yolk pasta, 36-month Reggiano fondue, and shaved fresh black tuber melanosporum.",
-    winePairing: "Gaja Barbaresco DOCG 2016",
-    origin: "Piedmont & Périgord",
+      "Juicy chicken wings seared over open fire, coated in sticky honey BBQ sauce, served with crisp celery.",
+    winePairing: "Fresh Mint Lemonade",
+    origin: "Local Farm Sourced",
   },
   {
     courseNumber: 4,
-    title: "Le Cœur",
-    dishName: "Kagoshima A5 Wagyu Tenderloin",
+    title: "Dessert",
+    dishName: "Warm Chocolate Lava Cake",
     description:
-      "Glazed over binchotan embers, smoked marrow emulsion, baby Japanese turnips.",
-    winePairing: "Château Latour Premier Grand Cru Classé 2010",
-    origin: "Kagoshima Prefecture",
+      "Rich dark chocolate cake with a warm flowing center, served alongside cold vanilla bean ice cream.",
+    winePairing: "Fresh Brewed Coffee",
+    origin: "Baked In-House",
   },
   {
     courseNumber: 5,
-    title: "L'Apogée",
-    dishName: "Golden Grand Cru Chocolate & Cloud",
+    title: "Sweet Finish",
+    dishName: "Salted Caramel Pretzel Shake",
     description:
-      "Valrhona 85% single-origin criollo chocolate, smoked sea salt, passionfruit pearls & gold cloud.",
-    winePairing: "Château d'Yquem Premier Cru Supérieur 2015",
-    origin: "Madagascar & Bordeaux",
+      "Thick handspun milkshake layered with buttery caramel, fine sea salt, and crispy crushed pretzels.",
+    winePairing: "Sweet Treats",
+    origin: "Real Dairy Ice Cream",
   },
 ];
 
 export const REVIEWS: Review[] = [
   {
     id: "rev-1",
-    name: "Michelin Guide Inspector",
-    role: "Culinary Reviewer",
+    name: "David Miller",
+    role: "Local Food Critic",
     rating: 5,
     comment:
-      "Chef Antoine Laurent balances audacity with reverence for French classical heritage. The Miyazaki Wagyu and Hokkaido Scallop Crudo are sheer masterclasses in harmony.",
-    source: "Michelin Dining Guide",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
-    date: "Autumn Selection",
+      "Hands down the best flame-grilled burger in town. The meat is juicy, the bun is toasted just right, and the truffle fries are phenomenal.",
+    source: "Google Reviews",
+    avatar:
+      "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80",
+    date: "2 days ago",
   },
   {
     id: "rev-2",
-    name: "Eleanor Vance-St. Claire",
-    role: "Vogue Gourmet Editor",
+    name: "Sarah Jenkins",
+    role: "Regular Customer",
     rating: 5,
     comment:
-      "The atmosphere transcends typical dining. From the moment the sommelier presents the vintage list to the dramatic chocolate sphere finale, it is an unparalleled symphony.",
-    source: "Vogue Gastronomy",
-    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80",
-    date: "2 weeks ago",
+      "The Double Smokehouse combo is unmatched. Everything tastes fresh, the staff is welcoming, and orders come out fast.",
+    source: "Yelp Reviews",
+    avatar:
+      "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80",
+    date: "1 week ago",
   },
   {
     id: "rev-3",
-    name: "Marcus Sterling",
-    role: "Private Collector & Epicure",
+    name: "Marcus Chen",
+    role: "Burger Lover",
     rating: 5,
     comment:
-      "Hosted our 10th anniversary in the Private Wine Cellar. The service was telepathic, the wine pairings revealed notes I had never experienced, and every course was perfection.",
+      "Clean dining room, great music, and simple high-quality food. You can taste the real wood grill flavor in every bite.",
     source: "Verified Diner",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
-    date: "Last month",
+    avatar:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80",
+    date: "2 weeks ago",
   },
 ];
 
 export const GALLERY_IMAGES = [
   {
-    title: "The Main Dining Salon",
-    caption: "Designed by Studio Liaigre with custom velvet banquettes and hand-blown chandeliers.",
-    image: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80",
+    title: "Flame Grill in Action",
+    caption: "Fresh beef patties seared over open fire for maximum flavor and crispy edges.",
+    image:
+      "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80",
   },
   {
-    title: "Culinary Precision",
-    caption: "Every plate is treated as a delicate canvas of flavor and textural balance.",
-    image: "https://images.unsplash.com/photo-1578474846511-04ba529f0b88?auto=format&fit=crop&w=1000&q=80",
+    title: "Handcrafted Burgers",
+    caption: "Stacked fresh with toasted brioche, melted cheddar, crisp greens, and signature sauce.",
+    image:
+      "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1000&q=80",
   },
   {
-    title: "Heritage Wine Vault",
-    caption: "Over 350 rare vintages guarded at precise cellar temperature and humidity.",
-    image: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=1000&q=80",
+    title: "Crispy Golden Fries",
+    caption: "Cut fresh every morning and fried golden with sea salt and garlic herbs.",
+    image:
+      "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=1000&q=80",
   },
   {
-    title: "The Sommelier's Pour",
-    caption: "Bespoke pairings matched dish by dish for our multi-course tasting journey.",
-    image: "https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1000&q=80",
+    title: "Handspun Milkshakes",
+    caption: "Thick, creamy shakes whipped fresh with real dairy ice cream and artisan toppings.",
+    image:
+      "https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=1000&q=80",
   },
   {
-    title: "Charcoal Mastery",
-    caption: "Binchotan white oak embers searing prime cuts to smoky tenderness.",
-    image: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1000&q=80",
+    title: "Warm Dining Room",
+    caption: "Bright, comfortable seating designed for casual family dinners and friendly get-togethers.",
+    image:
+      "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1000&q=80",
   },
   {
-    title: "Pastry Artistry",
-    caption: "Sculptural desserts featuring single-origin chocolates and botanical infusions.",
-    image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=1000&q=80",
+    title: "Outdoor Patio Seating",
+    caption: "Enjoy open-air dining on our sunny outdoor deck for lunch and breezy evening dinners.",
+    image:
+      "https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1000&q=80",
   },
 ];
 
 export const FAQS = [
   {
-    question: "What is the dress code at L'Étoile Dorée?",
+    question: "How do I place an order online?",
     answer:
-      "We encourage elegant or business casual attire. Jackets are appreciated for gentlemen in the main dining salon and tasting counter, while athletic wear and beachwear are not permitted.",
+      "You can select your items on our website and place an order in seconds. Choose between fast pickup, local delivery, or quick dine-in order.",
   },
   {
-    question: "How far in advance can I book a table?",
+    question: "Is your beef fresh or frozen?",
     answer:
-      "Online reservations open 30 days in advance at 9:00 AM local time. For private dining rooms and parties of 6 or more, reservations can be requested up to 90 days in advance.",
+      "We use 100% prime beef ground fresh daily. We never freeze our meat or use artificial fillers or preservatives.",
   },
   {
-    question: "Do you accommodate dietary restrictions and allergies?",
+    question: "Do you offer vegetarian and gluten-free choices?",
     answer:
-      "Absolutely. Our culinary team customizes both à la carte and tasting menus for vegetarian, pescatarian, gluten-free, and nut-allergy guests. Please notify us during booking.",
+      "Yes! We offer a grilled plant-based burger, gluten-free buns upon request, and fresh loaded salads and sides.",
   },
   {
-    question: "Is valet parking available?",
+    question: "Can I order for takeaway or pickup?",
     answer:
-      "Complimentary white-glove valet parking is provided at our main entrance from 5:30 PM until closing every evening.",
+      "Yes! You can order directly through our website for quick pickup or choose takeaway when booking.",
   },
   {
-    question: "Can I bring my own special vintage wine (Corkage Policy)?",
+    question: "Do you have options for kids and families?",
     answer:
-      "You are welcome to bring up to two 750ml bottles of wine not currently represented in our cellar list. Our corkage fee is $75 per bottle.",
+      "Yes, we have kid-friendly burger sets, crispy chicken tenders, fries, and shakes that both kids and adults enjoy.",
   },
 ];

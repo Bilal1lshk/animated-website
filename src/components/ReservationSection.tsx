@@ -1,415 +1,513 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
 import {
-  Calendar as CalendarIcon,
+  ShoppingBag,
   Clock,
-  Users,
-  Sparkles,
+  Plus,
+  Minus,
   CheckCircle2,
   X,
+  ArrowRight,
+  Bike,
+  Store,
+  UtensilsCrossed,
+  Sparkles,
 } from "lucide-react";
+import { useCart } from "@/context/CartContext";
+import { MENU_ITEMS, MenuItem } from "@/data/restaurantData";
 
 export default function ReservationSection() {
-  const [date, setDate] = useState(() => {
-    const today = new Date();
-    today.setDate(today.getDate() + 1);
-    return today.toISOString().split("T")[0];
-  });
-  const [time, setTime] = useState("19:30");
-  const [guests, setGuests] = useState(2);
-  const [seatingArea, setSeatingArea] = useState("Main Dining Salon");
-  const [occasion, setOccasion] = useState("Celebration / Date Night");
+  const {
+    items,
+    addToCart,
+    updateQuantity,
+    removeFromCart,
+    clearCart,
+    subtotal,
+    tax,
+    total,
+  } = useCart();
+
+  const [orderType, setOrderType] = useState<"pickup" | "delivery" | "dinein">("pickup");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [specialNotes, setSpecialNotes] = useState("");
+  const [address, setAddress] = useState("");
+  const [timeSlot, setTimeSlot] = useState("ASAP (15–20 mins)");
+  const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [bookingConfirmed, setBookingConfirmed] = useState<any | null>(null);
+  const [confirmedOrder, setConfirmedOrder] = useState<{
+    orderId: string;
+    name: string;
+    phone: string;
+    orderType: string;
+    address?: string;
+    timeSlot: string;
+    total: number;
+    itemCount: number;
+  } | null>(null);
 
-  const seatingOptions = [
-    {
-      name: "Main Dining Salon",
-      description: "Center chandeliers, velvet banquettes, live soft acoustics.",
-    },
-    {
-      name: "The Chef's Counter",
-      description: "Front-row seats facing the kitchen pass and binchotan hearth.",
-    },
-    {
-      name: "Garden Terrace",
-      description: "Heated botanical glass patio with starlight views.",
-    },
-    {
-      name: "The Wine Vault",
-      description: "Intimate sommelier lounge surrounded by rare vintages.",
-    },
-  ];
+  // Quick items to display if cart is empty
+  const quickItems = MENU_ITEMS.slice(0, 4);
 
-  const timeSlots = [
-    { label: "12:30 PM", category: "Lunch" },
-    { label: "1:30 PM", category: "Lunch" },
-    { label: "6:00 PM", category: "Dinner" },
-    { label: "7:00 PM", category: "Dinner" },
-    { label: "7:30 PM", category: "Dinner" },
-    { label: "8:30 PM", category: "Dinner" },
-    { label: "9:15 PM", category: "Dinner" },
-  ];
+  const handleQuickAdd = (item: MenuItem) => {
+    addToCart(item);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!name || !phone) return;
+    if (items.length === 0) return;
+
     setIsSubmitting(true);
 
     setTimeout(() => {
       setIsSubmitting(false);
-      const confirmationNumber = "LD-" + Math.floor(100000 + Math.random() * 900000);
-      const bookingData = {
-        confirmationNumber,
+      const orderId = "GS-" + Math.floor(100000 + Math.random() * 900000);
+      setConfirmedOrder({
+        orderId,
         name,
-        email,
         phone,
-        date,
-        time,
-        guests,
-        seatingArea,
-        occasion,
-        specialNotes,
-      };
-
-      setBookingConfirmed(bookingData);
+        orderType:
+          orderType === "pickup"
+            ? "Takeaway / Pickup"
+            : orderType === "delivery"
+            ? "Local Delivery"
+            : "Dine-In Quick Order",
+        address: orderType === "delivery" ? address : undefined,
+        timeSlot,
+        total,
+        itemCount: items.reduce((sum, i) => sum + i.quantity, 0),
+      });
 
       try {
         confetti({
-          particleCount: 80,
-          spread: 70,
+          particleCount: 75,
+          spread: 65,
           origin: { y: 0.6 },
-          colors: ["#b48c1e", "#d4af37", "#1c1917"],
+          colors: ["#b48c1e", "#d97706", "#1c1917"],
         });
       } catch {
         // ignore
       }
-    }, 800);
+    }, 700);
+  };
+
+  const handleReset = () => {
+    setConfirmedOrder(null);
+    clearCart();
+    setName("");
+    setPhone("");
+    setAddress("");
+    setNotes("");
   };
 
   return (
-    <section id="reservation" className="py-24 sm:py-32 relative bg-white overflow-hidden">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-600/30 bg-amber-500/10 text-amber-800 text-xs uppercase tracking-[0.16em] font-medium mb-4">
-            <CalendarIcon className="w-3.5 h-3.5 text-amber-700" />
-            <span>Table Reservations</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl font-bold text-stone-900 tracking-tight mb-4">
-            An Evening of{" "}
-            <span className="text-amber-800 font-semibold">Unforgettable Flavors</span>
+    <section id="reservation" className="py-24 sm:py-32 relative bg-white overflow-hidden scroll-mt-12">
+      {/* Anchor for #order links */}
+      <div id="order" className="absolute -top-16" />
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
+        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 tracking-tight mb-3">
+            Place Your Order
           </h2>
-          <p className="text-stone-600 text-sm sm:text-base">
-            We reserve a portion of tables each evening for online booking. Please reserve in advance
-            for weekend dinner services and the Chef&apos;s Counter experience.
+          <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+            Order fresh flame-grilled burgers, loaded fries, and craft shakes for fast pickup or delivery.
           </p>
         </div>
 
-        {/* Booking Card & Form */}
-        <div className="bg-[#faf9f6] rounded-3xl p-6 sm:p-12 border border-stone-200 shadow-xl">
-          <form onSubmit={handleSubmit} className="space-y-10">
-            {/* Step 1: Date, Time & Party Size */}
-            <div>
-              <h3 className="text-lg text-stone-900 font-semibold mb-6 flex items-center gap-2.5">
-                <span className="w-7 h-7 rounded-full bg-amber-600 text-white text-xs font-bold flex items-center justify-center">
-                  1
-                </span>
-                <span>Select Date, Time &amp; Guests</span>
-              </h3>
+        {/* Order Booking Container */}
+        <div className="bg-[#faf9f6] rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xs">
+          {/* Step 1: Order Type Selector */}
+          <div className="mb-8">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-3">
+              1. Choose Order Type
+            </label>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <button
+                type="button"
+                onClick={() => setOrderType("pickup")}
+                className={`flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-2xl text-xs font-semibold uppercase tracking-wider border transition-all cursor-pointer ${
+                  orderType === "pickup"
+                    ? "bg-stone-900 text-white border-stone-900 shadow-sm"
+                    : "bg-white text-stone-700 border-stone-200 hover:border-amber-500"
+                }`}
+              >
+                <Store className="w-4 h-4" />
+                <span>Pickup / Takeaway</span>
+              </button>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {/* Date Picker */}
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-stone-600 mb-2 font-medium">
-                    Date of Dining
-                  </label>
-                  <input
-                    type="date"
-                    required
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    className="w-full bg-white border border-stone-300 rounded-xl px-4 py-3 text-sm text-stone-900 focus:outline-none focus:border-amber-600 transition-colors shadow-sm"
-                  />
-                </div>
+              <button
+                type="button"
+                onClick={() => setOrderType("delivery")}
+                className={`flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-2xl text-xs font-semibold uppercase tracking-wider border transition-all cursor-pointer ${
+                  orderType === "delivery"
+                    ? "bg-stone-900 text-white border-stone-900 shadow-sm"
+                    : "bg-white text-stone-700 border-stone-200 hover:border-amber-500"
+                }`}
+              >
+                <Bike className="w-4 h-4" />
+                <span>Local Delivery</span>
+              </button>
 
-                {/* Number of Guests */}
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-stone-600 mb-2 font-medium">
-                    Number of Guests
-                  </label>
-                  <div className="flex items-center gap-2 bg-white border border-stone-300 rounded-xl px-4 py-2.5 shadow-sm">
-                    <Users className="w-4 h-4 text-amber-700" />
-                    <select
-                      value={guests}
-                      onChange={(e) => setGuests(Number(e.target.value))}
-                      className="w-full bg-transparent text-sm text-stone-900 focus:outline-none cursor-pointer"
-                    >
-                      {[1, 2, 3, 4, 5, 6, 7, 8, 10, 12].map((num) => (
-                        <option key={num} value={num} className="bg-white text-stone-900">
-                          {num} {num === 1 ? "Guest (Solo Epicure)" : `Guests`}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-
-                {/* Time Slot Picker */}
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-stone-600 mb-2 font-medium">
-                    Preferred Time Slot
-                  </label>
-                  <div className="flex items-center gap-2 bg-white border border-stone-300 rounded-xl px-4 py-2.5 shadow-sm">
-                    <Clock className="w-4 h-4 text-amber-700" />
-                    <select
-                      value={time}
-                      onChange={(e) => setTime(e.target.value)}
-                      className="w-full bg-transparent text-sm text-stone-900 focus:outline-none cursor-pointer"
-                    >
-                      {timeSlots.map((slot) => (
-                        <option key={slot.label} value={slot.label} className="bg-white text-stone-900">
-                          {slot.label} ({slot.category})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-              </div>
+              <button
+                type="button"
+                onClick={() => setOrderType("dinein")}
+                className={`flex items-center justify-center gap-2.5 py-3.5 px-4 rounded-2xl text-xs font-semibold uppercase tracking-wider border transition-all cursor-pointer ${
+                  orderType === "dinein"
+                    ? "bg-stone-900 text-white border-stone-900 shadow-sm"
+                    : "bg-white text-stone-700 border-stone-200 hover:border-amber-500"
+                }`}
+              >
+                <UtensilsCrossed className="w-4 h-4" />
+                <span>Dine-In Quick Order</span>
+              </button>
             </div>
+          </div>
 
-            {/* Step 2: Seating Experience */}
-            <div className="pt-6 border-t border-stone-200">
-              <h3 className="text-lg text-stone-900 font-semibold mb-6 flex items-center gap-2.5">
-                <span className="w-7 h-7 rounded-full bg-amber-600 text-white text-xs font-bold flex items-center justify-center">
-                  2
-                </span>
-                <span>Choose Your Atmosphere</span>
-              </h3>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Left Column: Order Items Selection */}
+            <div className="lg:col-span-6 space-y-4">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-semibold uppercase tracking-wider text-stone-700">
+                  2. Your Order Items ({items.length})
+                </label>
+                {items.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={clearCart}
+                    className="text-xs text-stone-400 hover:text-rose-600 underline cursor-pointer"
+                  >
+                    Clear items
+                  </button>
+                )}
+              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {seatingOptions.map((opt) => {
-                  const isSelected = seatingArea === opt.name;
-                  return (
-                    <div
-                      key={opt.name}
-                      onClick={() => setSeatingArea(opt.name)}
-                      className={`p-4 rounded-2xl border transition-all duration-300 cursor-pointer flex flex-col justify-between ${
-                        isSelected
-                          ? "bg-amber-50 border-amber-600 shadow-md scale-[1.02]"
-                          : "bg-white border-stone-200 hover:border-stone-300 hover:bg-stone-50"
-                      }`}
-                    >
-                      <div>
-                        <div className="flex items-center justify-between mb-2">
-                          <h4 className="text-sm font-semibold text-stone-900">
-                            {opt.name}
-                          </h4>
-                          <div
-                            className={`w-3.5 h-3.5 rounded-full border flex items-center justify-center ${
-                              isSelected ? "border-amber-600 bg-amber-600" : "border-stone-400"
-                            }`}
-                          >
-                            {isSelected && <div className="w-1.5 h-1.5 rounded-full bg-white" />}
+              {items.length === 0 ? (
+                <div className="bg-white rounded-2xl p-6 border border-dashed border-stone-300 text-center">
+                  <div className="w-10 h-10 rounded-full bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700 mx-auto mb-3">
+                    <ShoppingBag className="w-5 h-5" />
+                  </div>
+                  <h4 className="text-sm font-semibold text-stone-900 mb-1">
+                    Your order is empty
+                  </h4>
+                  <p className="text-xs text-stone-500 mb-4">
+                    Tap a popular item below to add it immediately, or browse our menu.
+                  </p>
+
+                  {/* Quick-add popular items */}
+                  <div className="space-y-2 text-left">
+                    {quickItems.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between p-2.5 rounded-xl bg-[#faf9f6] border border-stone-200 hover:border-amber-400 transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-lg overflow-hidden relative flex-shrink-0">
+                            <Image
+                              src={item.image}
+                              alt={item.name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <div>
+                            <div className="text-xs font-semibold text-stone-900">
+                              {item.name}
+                            </div>
+                            <div className="text-[11px] text-amber-800 font-bold">
+                              ${item.price}
+                            </div>
                           </div>
                         </div>
-                        <p className="text-[11px] text-stone-500 leading-relaxed">
-                          {opt.description}
-                        </p>
+
+                        <button
+                          type="button"
+                          onClick={() => handleQuickAdd(item)}
+                          className="px-3 py-1.5 rounded-lg bg-stone-900 hover:bg-amber-600 text-white text-xs font-semibold flex items-center gap-1 transition-colors cursor-pointer"
+                        >
+                          <Plus className="w-3.5 h-3.5" />
+                          <span>Add</span>
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+
+                  <a
+                    href="#menu"
+                    className="inline-block mt-4 text-xs font-semibold text-amber-700 hover:text-amber-800 underline uppercase tracking-wider"
+                  >
+                    Browse Full Menu &rarr;
+                  </a>
+                </div>
+              ) : (
+                <div className="bg-white rounded-2xl p-4 border border-stone-200 divide-y divide-stone-100 max-h-80 overflow-y-auto">
+                  {items.map(({ item, quantity }) => (
+                    <div
+                      key={item.id}
+                      className="py-3 first:pt-0 last:pb-0 flex items-center justify-between gap-3"
+                    >
+                      <div className="flex items-center gap-3 min-w-0">
+                        <div className="w-12 h-12 rounded-xl overflow-hidden relative flex-shrink-0 border border-stone-200">
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div className="truncate">
+                          <h4 className="text-xs sm:text-sm font-semibold text-stone-900 truncate">
+                            {item.name}
+                          </h4>
+                          <span className="text-xs text-amber-800 font-bold">
+                            ${(item.price * quantity).toFixed(2)}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 bg-stone-50 border border-stone-200 rounded-lg p-1">
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(item.id, -1)}
+                          className="p-1 text-stone-500 hover:text-stone-900 cursor-pointer"
+                          aria-label="Decrease quantity"
+                        >
+                          <Minus className="w-3.5 h-3.5" />
+                        </button>
+                        <span className="px-1.5 text-xs font-bold text-stone-900">
+                          {quantity}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => updateQuantity(item.id, 1)}
+                          className="p-1 text-stone-500 hover:text-stone-900 cursor-pointer"
+                          aria-label="Increase quantity"
+                        >
+                          <Plus className="w-3.5 h-3.5" />
+                        </button>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
+                  ))}
+
+                  <div className="pt-3 flex justify-between items-center text-xs">
+                    <a
+                      href="#menu"
+                      className="text-amber-700 hover:text-amber-800 font-medium underline"
+                    >
+                      + Add more items from menu
+                    </a>
+                    <span className="text-stone-500">
+                      Subtotal: <strong className="text-stone-900">${subtotal.toFixed(2)}</strong>
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
 
-            {/* Step 3: Contact & Special Notes */}
-            <div className="pt-6 border-t border-stone-200">
-              <h3 className="text-lg text-stone-900 font-semibold mb-6 flex items-center gap-2.5">
-                <span className="w-7 h-7 rounded-full bg-amber-600 text-white text-xs font-bold flex items-center justify-center">
-                  3
-                </span>
-                <span>Diner Contact &amp; Special Requests</span>
-              </h3>
+            {/* Right Column: Customer Details & Submit */}
+            <div className="lg:col-span-6">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700">
+                  3. Contact &amp; Timing Details
+                </label>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-6">
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-stone-600 mb-2 font-medium">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Lorde Harrington"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="w-full bg-white border border-stone-300 rounded-xl px-4 py-3 text-sm text-stone-900 focus:outline-none focus:border-amber-600 transition-colors shadow-sm"
-                  />
+                {/* Name & Phone */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] font-medium text-stone-600 mb-1">
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Alex Johnson"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-medium text-stone-600 mb-1">
+                      Phone Number *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="e.g. (555) 234-5678"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-stone-600 mb-2 font-medium">
-                    Email Address
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    placeholder="name@domain.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full bg-white border border-stone-300 rounded-xl px-4 py-3 text-sm text-stone-900 focus:outline-none focus:border-amber-600 transition-colors shadow-sm"
-                  />
-                </div>
+                {/* Delivery Address (if delivery) */}
+                {orderType === "delivery" && (
+                  <div>
+                    <label className="block text-[11px] font-medium text-stone-600 mb-1">
+                      Delivery Address *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="Street address, apartment or suite number"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
+                    />
+                  </div>
+                )}
 
+                {/* Preferred Ready Time */}
                 <div>
-                  <label className="block text-xs uppercase tracking-wider text-stone-600 mb-2 font-medium">
-                    Mobile Phone
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    placeholder="+1 (555) 000-0000"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="w-full bg-white border border-stone-300 rounded-xl px-4 py-3 text-sm text-stone-900 focus:outline-none focus:border-amber-600 transition-colors shadow-sm"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-xs uppercase tracking-wider text-stone-600 mb-2 font-medium">
-                    Occasion
+                  <label className="block text-[11px] font-medium text-stone-600 mb-1 flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-amber-700" />
+                    <span>Preferred Time</span>
                   </label>
                   <select
-                    value={occasion}
-                    onChange={(e) => setOccasion(e.target.value)}
-                    className="w-full bg-white border border-stone-300 rounded-xl px-4 py-3 text-sm text-stone-900 focus:outline-none focus:border-amber-600 transition-colors cursor-pointer shadow-sm"
+                    value={timeSlot}
+                    onChange={(e) => setTimeSlot(e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm text-stone-900 focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
                   >
-                    <option value="Celebration / Date Night">Celebration / Romantic Date</option>
-                    <option value="Anniversary">Anniversary</option>
-                    <option value="Birthday">Birthday</option>
-                    <option value="Executive Business Dinner">Executive Business Dinner</option>
-                    <option value="Casual Gastronomy">Casual Gastronomic Journey</option>
+                    <option value="ASAP (15–20 mins)">ASAP (15–20 mins)</option>
+                    <option value="In 30 mins">In 30 mins</option>
+                    <option value="In 45 mins">In 45 mins</option>
+                    <option value="In 1 hour">In 1 hour</option>
+                    <option value="Lunch: 12:30 PM">Lunch: 12:30 PM</option>
+                    <option value="Lunch: 1:30 PM">Lunch: 1:30 PM</option>
+                    <option value="Dinner: 6:00 PM">Dinner: 6:00 PM</option>
+                    <option value="Dinner: 7:00 PM">Dinner: 7:00 PM</option>
+                    <option value="Dinner: 8:00 PM">Dinner: 8:00 PM</option>
                   </select>
                 </div>
 
+                {/* Order Notes */}
                 <div>
-                  <label className="block text-xs uppercase tracking-wider text-stone-600 mb-2 font-medium">
-                    Dietary Allergies or Special Notes
+                  <label className="block text-[11px] font-medium text-stone-600 mb-1">
+                    Kitchen Notes / Special Requests (Optional)
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Nut allergy, gluten sensitive, anniversary flowers"
-                    value={specialNotes}
-                    onChange={(e) => setSpecialNotes(e.target.value)}
-                    className="w-full bg-white border border-stone-300 rounded-xl px-4 py-3 text-sm text-stone-900 focus:outline-none focus:border-amber-600 transition-colors shadow-sm"
+                    placeholder="e.g. Extra sauce, no onions, cutlery needed"
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
                   />
                 </div>
-              </div>
-            </div>
 
-            {/* Submit Button */}
-            <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div className="text-xs text-stone-500 font-light text-center sm:text-left">
-                No prepayment required. Cancellations requested at least 24 hours in advance.
-              </div>
+                {/* Price Breakdown */}
+                <div className="bg-white rounded-2xl p-4 border border-stone-200 text-xs space-y-1.5 pt-3">
+                  <div className="flex justify-between text-stone-500">
+                    <span>Subtotal:</span>
+                    <span className="text-stone-900 font-medium">${subtotal.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-stone-500">
+                    <span>Estimated Tax (8%):</span>
+                    <span className="text-stone-900 font-medium">${tax.toFixed(2)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm font-bold text-stone-900 pt-2 border-t border-stone-100">
+                    <span>Total Amount:</span>
+                    <span className="text-amber-800">${total.toFixed(2)}</span>
+                  </div>
+                </div>
 
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-10 py-4 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 shadow-lg shadow-black/10 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer disabled:opacity-50"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Sparkles className="w-4 h-4 animate-spin" />
-                    <span>Securing Table...</span>
-                  </>
-                ) : (
-                  <>
-                    <span>Confirm Reservation</span>
-                  </>
-                )}
-              </button>
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting || items.length === 0}
+                  className="w-full py-4 rounded-xl text-xs sm:text-sm font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? (
+                    <span>Submitting Order...</span>
+                  ) : items.length === 0 ? (
+                    <span>Add Items to Place Order</span>
+                  ) : (
+                    <>
+                      <ShoppingBag className="w-4 h-4" />
+                      <span>Confirm Order Booking (${total.toFixed(2)})</span>
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+              </form>
             </div>
-          </form>
+          </div>
         </div>
       </div>
 
       {/* Confirmation Modal */}
       <AnimatePresence>
-        {bookingConfirmed && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        {confirmedOrder && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-xs">
             <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="relative max-w-lg w-full rounded-3xl bg-white border border-stone-200 p-8 shadow-2xl text-stone-900"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="relative max-w-md w-full bg-white rounded-3xl p-6 sm:p-8 border border-stone-200 shadow-2xl text-stone-900 text-center"
             >
               <button
-                onClick={() => setBookingConfirmed(null)}
-                className="absolute top-4 right-4 p-2 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition-colors"
+                onClick={handleReset}
+                className="absolute top-4 right-4 p-2 rounded-full text-stone-400 hover:text-stone-900 hover:bg-stone-100 transition-colors cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              <div className="text-center mb-6">
-                <div className="w-14 h-14 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-300 mx-auto flex items-center justify-center mb-4">
-                  <CheckCircle2 className="w-8 h-8" />
-                </div>
-                <span className="text-xs uppercase tracking-[0.2em] text-amber-700 font-mono font-bold">
-                  Reservation Confirmed
-                </span>
-                <h3 className="text-2xl text-stone-900 font-bold mt-1">
-                  We Look Forward to Welcoming You
-                </h3>
+              <div className="w-14 h-14 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mx-auto mb-4">
+                <CheckCircle2 className="w-8 h-8" />
               </div>
 
-              {/* Digital Pass Ticket */}
-              <div className="bg-stone-50 rounded-2xl p-6 border border-stone-200 mb-6 space-y-3 text-xs sm:text-sm">
-                <div className="flex justify-between border-b border-stone-200 pb-2">
-                  <span className="text-stone-500">Confirmation Code:</span>
-                  <span className="font-mono text-amber-700 font-bold">
-                    {bookingConfirmed.confirmationNumber}
-                  </span>
+              <span className="text-[11px] uppercase tracking-widest text-emerald-700 font-semibold font-mono">
+                Order Received
+              </span>
+              <h3 className="text-2xl font-bold text-stone-900 mt-1 mb-2">
+                Order Placed Successfully!
+              </h3>
+              <p className="text-xs text-stone-600 mb-6">
+                Our kitchen is firing up the grill. Confirmation SMS sent to {confirmedOrder.phone}.
+              </p>
+
+              <div className="bg-[#faf9f6] rounded-2xl p-4 border border-stone-200 text-xs text-left space-y-2 mb-6">
+                <div className="flex justify-between py-1 border-b border-stone-200">
+                  <span className="text-stone-500">Order ID:</span>
+                  <span className="font-mono font-bold text-amber-800">{confirmedOrder.orderId}</span>
                 </div>
-                <div className="flex justify-between border-b border-stone-200 pb-2">
-                  <span className="text-stone-500">Guest Name:</span>
-                  <span className="text-stone-900 font-medium">{bookingConfirmed.name}</span>
+                <div className="flex justify-between py-1 border-b border-stone-200">
+                  <span className="text-stone-500">Customer:</span>
+                  <span className="font-semibold text-stone-900">{confirmedOrder.name}</span>
                 </div>
-                <div className="flex justify-between border-b border-stone-200 pb-2">
-                  <span className="text-stone-500">Date &amp; Time:</span>
-                  <span className="text-stone-900 font-medium">
-                    {bookingConfirmed.date} at {bookingConfirmed.time}
-                  </span>
+                <div className="flex justify-between py-1 border-b border-stone-200">
+                  <span className="text-stone-500">Order Type:</span>
+                  <span className="font-medium text-stone-900">{confirmedOrder.orderType}</span>
                 </div>
-                <div className="flex justify-between border-b border-stone-200 pb-2">
-                  <span className="text-stone-500">Party Size:</span>
-                  <span className="text-stone-900 font-medium">
-                    {bookingConfirmed.guests} Guests
-                  </span>
+                {confirmedOrder.address && (
+                  <div className="flex justify-between py-1 border-b border-stone-200">
+                    <span className="text-stone-500">Deliver To:</span>
+                    <span className="font-medium text-stone-900 truncate max-w-[200px]">{confirmedOrder.address}</span>
+                  </div>
+                )}
+                <div className="flex justify-between py-1 border-b border-stone-200">
+                  <span className="text-stone-500">Estimated Ready:</span>
+                  <span className="font-medium text-stone-900">{confirmedOrder.timeSlot}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-stone-500">Atmosphere:</span>
-                  <span className="text-amber-800 font-medium">
-                    {bookingConfirmed.seatingArea}
-                  </span>
+                <div className="flex justify-between py-1">
+                  <span className="text-stone-500">Total Billed:</span>
+                  <span className="font-bold text-stone-900 text-sm">${confirmedOrder.total.toFixed(2)}</span>
                 </div>
               </div>
 
-              <div className="flex gap-3">
-                <button
-                  onClick={() => setBookingConfirmed(null)}
-                  className="w-full py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 transition-colors"
-                >
-                  Close &amp; Continue Exploring
-                </button>
-              </div>
+              <button
+                onClick={handleReset}
+                className="w-full py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-stone-800 transition-colors cursor-pointer"
+              >
+                Done &amp; Order More
+              </button>
             </motion.div>
           </div>
         )}

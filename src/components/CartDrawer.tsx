@@ -31,13 +31,13 @@ export default function CartDrawer() {
   } = useCart();
 
   const [checkoutStep, setCheckoutStep] = useState<"cart" | "processing" | "success">("cart");
-  const [tableNumber, setTableNumber] = useState("Table 14 - Salon");
+  const [tableNumber, setTableNumber] = useState("Dine-In Table");
 
   const handleCheckout = () => {
     setCheckoutStep("processing");
     setTimeout(() => {
       setCheckoutStep("success");
-    }, 1200);
+    }, 1000);
   };
 
   const handleClose = () => {
@@ -58,7 +58,7 @@ export default function CartDrawer() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="absolute inset-0 bg-black/75 backdrop-blur-sm transition-opacity"
+            className="absolute inset-0 bg-black/70 backdrop-blur-xs transition-opacity"
           />
 
           <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
@@ -76,9 +76,9 @@ export default function CartDrawer() {
                     <ShoppingBag className="w-4 h-4" />
                   </div>
                   <div>
-                    <h2 className="font-serif text-lg font-medium text-stone-900">Your Tasting Order</h2>
+                    <h2 className="text-base sm:text-lg font-bold text-stone-900">Your Order</h2>
                     <span className="text-xs text-stone-500">
-                      {totalItems} {totalItems === 1 ? "item" : "items"} selected
+                      {totalItems} {totalItems === 1 ? "item" : "items"} in cart
                     </span>
                   </div>
                 </div>
@@ -96,10 +96,10 @@ export default function CartDrawer() {
               <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 {checkoutStep === "processing" ? (
                   <div className="h-full flex flex-col items-center justify-center text-center py-20">
-                    <Sparkles className="w-10 h-10 text-amber-500 animate-spin mb-4" />
-                    <h3 className="font-serif text-xl text-stone-900">Transmitting to the Kitchen...</h3>
+                    <Sparkles className="w-10 h-10 text-amber-600 animate-spin mb-4" />
+                    <h3 className="text-xl font-bold text-stone-900">Sending Order to Kitchen...</h3>
                     <p className="text-xs text-stone-500 mt-2">
-                      Chef Laurent is reviewing your order course progression.
+                      Please wait a moment while we send your ticket.
                     </p>
                   </div>
                 ) : checkoutStep === "success" ? (
@@ -107,24 +107,24 @@ export default function CartDrawer() {
                     <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-4">
                       <CheckCircle2 className="w-9 h-9" />
                     </div>
-                    <span className="text-xs uppercase tracking-widest text-amber-600 font-mono font-medium">
-                      Order Received
+                    <span className="text-xs uppercase tracking-widest text-emerald-700 font-semibold">
+                      Order Confirmed
                     </span>
-                    <h3 className="font-serif text-2xl text-stone-900 mt-2 mb-3">
-                      The Kitchen Has Begun Preparation
+                    <h3 className="text-2xl font-bold text-stone-900 mt-2 mb-3">
+                      Order Placed Successfully!
                     </h3>
                     <p className="text-xs text-stone-600 leading-relaxed max-w-xs mb-8">
-                      Your order ticket has been forwarded to the kitchen pass. A sommelier will arrive shortly with your paired vintage.
+                      Your order has been received by our grill team and is being cooked fresh to order.
                     </p>
 
                     <div className="w-full bg-[#faf9f6] rounded-2xl p-4 border border-stone-200 text-xs text-left mb-6">
-                      <div className="flex justify-between py-1 border-b border-stone-200">
-                        <span className="text-stone-500">Target Station:</span>
-                        <span className="text-stone-800 font-medium">{tableNumber}</span>
+                      <div className="flex justify-between py-1.5 border-b border-stone-200">
+                        <span className="text-stone-500">Service Option:</span>
+                        <span className="text-stone-900 font-semibold">{tableNumber}</span>
                       </div>
-                      <div className="flex justify-between py-1 pt-2">
-                        <span className="text-stone-500">Total Billed:</span>
-                        <span className="text-stone-900 font-serif font-bold text-sm">${total.toFixed(2)}</span>
+                      <div className="flex justify-between py-1.5 pt-2">
+                        <span className="text-stone-500">Total:</span>
+                        <span className="text-stone-900 font-bold text-sm">${total.toFixed(2)}</span>
                       </div>
                     </div>
 
@@ -138,16 +138,16 @@ export default function CartDrawer() {
                 ) : items.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center text-center py-20 text-stone-400">
                     <ShoppingBag className="w-12 h-12 text-stone-300 mb-4 stroke-[1.5]" />
-                    <h3 className="font-serif text-xl text-stone-800 mb-2">Your Order Is Empty</h3>
+                    <h3 className="text-lg font-bold text-stone-800 mb-2">Your Cart is Empty</h3>
                     <p className="text-xs text-stone-500 max-w-xs mb-6">
-                      Explore our à la carte signatures and curate your tasting experience.
+                      Explore our menu and add burgers, sides, and shakes to your order.
                     </p>
                     <a
                       href="#menu"
                       onClick={handleClose}
-                      className="px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-amber-500 hover:bg-amber-600 transition-colors"
+                      className="px-6 py-2.5 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 transition-colors"
                     >
-                      View Menu
+                      Browse Menu
                     </a>
                   </div>
                 ) : (
@@ -167,10 +167,10 @@ export default function CartDrawer() {
                         </div>
 
                         <div className="flex-1 min-w-0 pr-2">
-                          <h4 className="font-serif text-sm text-stone-900 font-medium truncate">
+                          <h4 className="text-sm text-stone-900 font-semibold truncate">
                             {item.name}
                           </h4>
-                          <span className="text-xs text-amber-700 font-semibold font-serif">
+                          <span className="text-xs text-amber-800 font-bold">
                             ${item.price} each
                           </span>
                         </div>
@@ -184,7 +184,7 @@ export default function CartDrawer() {
                             >
                               <Minus className="w-3.5 h-3.5" />
                             </button>
-                            <span className="px-2 text-xs font-mono text-stone-800 font-medium">
+                            <span className="px-2 text-xs font-medium text-stone-800">
                               {quantity}
                             </span>
                             <button
@@ -212,7 +212,7 @@ export default function CartDrawer() {
                         onClick={clearCart}
                         className="text-[11px] text-stone-400 hover:text-rose-500 underline cursor-pointer"
                       >
-                        Clear all items
+                        Clear cart
                       </button>
                     </div>
                   </div>
@@ -228,41 +228,41 @@ export default function CartDrawer() {
                       <span className="text-stone-900 font-medium">${subtotal.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>State &amp; Local Tax (8.875%)</span>
+                      <span>Sales Tax (8%)</span>
                       <span className="text-stone-900 font-medium">${tax.toFixed(2)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>Sommelier &amp; Kitchen Gratuity (12%)</span>
+                      <span>Service Fee</span>
                       <span className="text-stone-900 font-medium">${serviceCharge.toFixed(2)}</span>
                     </div>
-                    <div className="flex justify-between text-base font-serif font-bold text-stone-900 pt-2 border-t border-stone-100">
-                      <span>Grand Total</span>
-                      <span className="text-amber-700">${total.toFixed(2)}</span>
+                    <div className="flex justify-between text-base font-bold text-stone-900 pt-2 border-t border-stone-100">
+                      <span>Total</span>
+                      <span className="text-amber-800">${total.toFixed(2)}</span>
                     </div>
                   </div>
 
                   {/* Dining Location selector */}
                   <div className="pt-1">
-                    <label className="block text-[11px] uppercase tracking-wider text-stone-500 mb-1">
-                      Dining Table / Service Option
+                    <label className="block text-[11px] uppercase tracking-wider text-stone-500 mb-1 font-medium">
+                      Order / Dining Type
                     </label>
                     <select
                       value={tableNumber}
                       onChange={(e) => setTableNumber(e.target.value)}
-                      className="w-full bg-[#faf9f6] border border-stone-200 rounded-xl px-3 py-2 text-xs text-stone-900 focus:outline-none focus:border-amber-500"
+                      className="w-full bg-[#faf9f6] border border-stone-200 rounded-xl px-3 py-2 text-xs text-stone-900 focus:outline-none focus:border-amber-600"
                     >
-                      <option value="Table 14 - Main Dining Salon">Table 14 - Main Dining Salon</option>
-                      <option value="Chef's Counter - Seat 4">Chef&apos;s Counter - Seat 4</option>
-                      <option value="Garden Terrace - Table 08">Garden Terrace - Table 08</option>
-                      <option value="Takeaway Concierge Packaging">Private Takeaway Concierge Box</option>
+                      <option value="Dine-In Table">Dine-In Table</option>
+                      <option value="Takeaway / Pickup">Takeaway / Pickup</option>
+                      <option value="Outdoor Patio">Outdoor Patio</option>
+                      <option value="Curbside Pickup">Curbside Pickup</option>
                     </select>
                   </div>
 
                   <button
                     onClick={handleCheckout}
-                    className="w-full py-3.5 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-gradient-to-r from-amber-500 via-amber-600 to-amber-500 hover:from-amber-600 hover:to-amber-700 shadow-md shadow-amber-500/20 flex items-center justify-center gap-2 cursor-pointer transition-all duration-300"
+                    className="w-full py-3.5 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 shadow-sm flex items-center justify-center gap-2 cursor-pointer transition-all duration-300"
                   >
-                    <span>Transmit Order to Kitchen</span>
+                    <span>Place Order (${total.toFixed(2)})</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>

@@ -9,16 +9,17 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "L'Étoile Dorée | Haute Cuisine & Fine Dining Experience",
+  title: "The Golden Star | Craft Kitchen & Flame-Grilled Burgers",
   description:
-    "Award-winning contemporary restaurant celebrating artisanal gastronomy, heritage wines, and unforgettable culinary craftsmanship.",
+    "Fresh flame-grilled burgers, crispy loaded fries, handcrafted shakes, and casual dining made fresh daily.",
   keywords: [
-    "Fine Dining",
-    "Haute Cuisine",
-    "Gourmet Restaurant",
-    "Michelin Star",
-    "Table Reservation",
-    "Artisanal Dining",
+    "Craft Burgers",
+    "Flame Grilled",
+    "Burger Restaurant",
+    "Loaded Fries",
+    "Milkshakes",
+    "Table Booking",
+    "Takeaway Food",
   ],
 };
 

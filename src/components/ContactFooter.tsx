@@ -10,6 +10,7 @@ import {
   CheckCircle,
   Sparkles,
 } from "lucide-react";
+import { RESTAURANT_INFO } from "@/data/restaurantData";
 
 export default function ContactFooter() {
   const [email, setEmail] = useState("");
@@ -28,20 +29,20 @@ export default function ContactFooter() {
     <footer id="contact" className="bg-[#fbfbf9] text-stone-700 border-t border-stone-200 pt-20 pb-12 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Top Info Banner */}
-        <div className="p-8 rounded-3xl bg-white border border-stone-200 shadow-sm mb-16 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+        <div className="p-8 rounded-3xl bg-white border border-stone-200 shadow-xs mb-16 grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-2xl bg-amber-500/10 border border-amber-600/20 flex items-center justify-center text-amber-700 flex-shrink-0">
               <Clock className="w-6 h-6" />
             </div>
             <div>
               <div className="text-xs uppercase tracking-widest text-amber-800 font-semibold">
-                Dinner Service
+                Opening Hours
               </div>
-              <div className="text-stone-900 font-serif text-lg font-medium">
-                Tue – Sun: 6:00 PM – 11:30 PM
+              <div className="text-stone-900 text-base font-semibold">
+                Mon – Sun: 11:30 AM – 11:00 PM
               </div>
               <div className="text-stone-500 text-xs mt-0.5">
-                Lunch: 12:00 PM – 3:00 PM
+                Kitchen closes 30 mins before closing
               </div>
             </div>
           </div>
@@ -52,13 +53,13 @@ export default function ContactFooter() {
             </div>
             <div>
               <div className="text-xs uppercase tracking-widest text-amber-800 font-semibold">
-                Sanctuary Location
+                Location
               </div>
-              <div className="text-stone-900 font-serif text-base font-medium">
-                740 Park Avenue, New York
+              <div className="text-stone-900 text-base font-semibold">
+                {RESTAURANT_INFO.address}
               </div>
               <div className="text-stone-500 text-xs mt-0.5">
-                White-glove valet on arrival
+                Convenient parking available nearby
               </div>
             </div>
           </div>
@@ -69,16 +70,16 @@ export default function ContactFooter() {
             </div>
             <div>
               <div className="text-xs uppercase tracking-widest text-amber-800 font-semibold">
-                Concierge Line
+                Call Us
               </div>
               <a
-                href="tel:+12125558392"
-                className="text-stone-900 font-serif text-lg font-medium hover:text-amber-700 transition-colors block"
+                href={`tel:${RESTAURANT_INFO.phone}`}
+                className="text-stone-900 text-base font-semibold hover:text-amber-700 transition-colors block"
               >
-                +1 (212) 555-8392
+                {RESTAURANT_INFO.phone}
               </a>
               <div className="text-stone-500 text-xs mt-0.5">
-                reservations@letoiledoree.com
+                {RESTAURANT_INFO.email}
               </div>
             </div>
           </div>
@@ -92,26 +93,25 @@ export default function ContactFooter() {
               <div className="w-9 h-9 rounded-full border border-amber-600/30 bg-amber-500/10 flex items-center justify-center text-amber-700">
                 <UtensilsCrossed className="w-4 h-4" />
               </div>
-              <span className="font-serif text-2xl font-bold tracking-wider text-stone-900">
-                L&apos;Étoile Dorée
+              <span className="text-xl font-bold tracking-tight text-stone-900">
+                {RESTAURANT_INFO.name}
               </span>
             </div>
-            <p className="text-stone-600 text-xs sm:text-sm font-light leading-relaxed mb-6 max-w-sm">
-              Contemporary French haute cuisine rooted in seasonal biodynamic agriculture, elemental
-              fire, and cellar-aged vintages.
+            <p className="text-stone-600 text-xs sm:text-sm leading-relaxed mb-6 max-w-sm">
+              Handcrafted burgers grilled over real embers, crispy sides, and fresh milkshakes. Simple, honest, and delicious food every single day.
             </p>
             <div className="flex items-center gap-2 text-xs text-amber-800 font-medium">
               <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-              <span>Michelin Guide Selected 2026</span>
+              <span>Dine-In • Takeaway • Fast Pickup</span>
             </div>
           </div>
 
-          {/* Navigation Links */}
+          {/* Quick Links */}
           <div className="lg:col-span-2">
-            <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-stone-900 mb-4">
-              Explore
+            <h4 className="text-xs uppercase tracking-[0.16em] font-semibold text-stone-900 mb-4">
+              Quick Links
             </h4>
-            <ul className="space-y-2.5 text-xs sm:text-sm font-light">
+            <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
                 <a href="#about" className="text-stone-600 hover:text-amber-700 transition-colors">
                   Our Story
@@ -119,51 +119,46 @@ export default function ContactFooter() {
               </li>
               <li>
                 <a href="#menu" className="text-stone-600 hover:text-amber-700 transition-colors">
-                  À La Carte Menu
+                  Full Menu
                 </a>
               </li>
               <li>
                 <a href="#tasting" className="text-stone-600 hover:text-amber-700 transition-colors">
-                  Tasting Journey
+                  Combo Sets
                 </a>
               </li>
               <li>
                 <a href="#reservation" className="text-stone-600 hover:text-amber-700 transition-colors">
-                  Table Reservations
-                </a>
-              </li>
-              <li>
-                <a href="#gallery" className="text-stone-600 hover:text-amber-700 transition-colors">
-                  Atmosphere
+                  Order Online
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Private Events */}
+          {/* Dining Options */}
           <div className="lg:col-span-2">
-            <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-stone-900 mb-4">
-              Private Dining
+            <h4 className="text-xs uppercase tracking-[0.16em] font-semibold text-stone-900 mb-4">
+              Services
             </h4>
-            <ul className="space-y-2.5 text-xs sm:text-sm font-light">
+            <ul className="space-y-2.5 text-xs sm:text-sm">
               <li>
                 <a href="#reservation" className="text-stone-600 hover:text-amber-700 transition-colors">
-                  The Wine Vault (14 Seats)
+                  Order Booking
                 </a>
               </li>
               <li>
                 <a href="#reservation" className="text-stone-600 hover:text-amber-700 transition-colors">
-                  The Garden Terrace (30 Seats)
+                  Takeaway &amp; Pickup
                 </a>
               </li>
               <li>
                 <a href="#reservation" className="text-stone-600 hover:text-amber-700 transition-colors">
-                  Chef&apos;s Private Salon (20 Seats)
+                  Group Gatherings
                 </a>
               </li>
               <li>
-                <a href="mailto:events@letoiledoree.com" className="text-stone-600 hover:text-amber-700 transition-colors">
-                  Bespoke Corporate Buyouts
+                <a href="#reservation" className="text-stone-600 hover:text-amber-700 transition-colors">
+                  Birthday Parties
                 </a>
               </li>
             </ul>
@@ -171,28 +166,27 @@ export default function ContactFooter() {
 
           {/* Newsletter Box */}
           <div className="lg:col-span-4">
-            <h4 className="text-xs uppercase tracking-[0.2em] font-semibold text-stone-900 mb-4">
-              The Sommelier&apos;s Gazette
+            <h4 className="text-xs uppercase tracking-[0.16em] font-semibold text-stone-900 mb-4">
+              Stay in Touch
             </h4>
-            <p className="text-stone-600 text-xs font-light leading-relaxed mb-4">
-              Subscribe to receive exclusive invitations to private cellar unveilings, seasonal menu
-              previews, and guest chef residency dinners.
+            <p className="text-stone-600 text-xs leading-relaxed mb-4">
+              Subscribe for weekly special items, student discounts, and event updates. No spam, ever.
             </p>
 
             {subscribed ? (
               <div className="flex items-center gap-2 p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-xs">
                 <CheckCircle className="w-4 h-4 text-emerald-600" />
-                <span>Thank you. You have been added to our private guest book.</span>
+                <span>Thank you for subscribing! We&apos;ll keep you posted.</span>
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="flex gap-2">
                 <input
                   type="email"
                   required
-                  placeholder="Your email address"
+                  placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-white border border-stone-300 rounded-full px-4 py-2.5 text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 flex-1 shadow-sm"
+                  className="bg-white border border-stone-300 rounded-full px-4 py-2.5 text-xs text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 flex-1 shadow-xs"
                 />
                 <button
                   type="submit"
@@ -207,19 +201,19 @@ export default function ContactFooter() {
         </div>
 
         {/* Bottom Copyright */}
-        <div className="pt-8 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 font-light gap-4">
+        <div className="pt-8 border-t border-stone-200 flex flex-col sm:flex-row items-center justify-between text-xs text-stone-500 gap-4">
           <div>
-            &copy; {new Date().getFullYear()} L&apos;Étoile Dorée Restaurant Group. All rights reserved.
+            &copy; {new Date().getFullYear()} {RESTAURANT_INFO.name}. All rights reserved.
           </div>
           <div className="flex gap-6">
             <span className="hover:text-stone-900 transition-colors cursor-pointer">
               Privacy Policy
             </span>
             <span className="hover:text-stone-900 transition-colors cursor-pointer">
-              Terms of Hospitality
+              Terms of Service
             </span>
             <span className="hover:text-stone-900 transition-colors cursor-pointer">
-              Accessibility
+              Contact Support
             </span>
           </div>
         </div>

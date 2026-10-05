@@ -24,18 +24,18 @@ export default function MenuSection() {
   const { addToCart, recentlyAddedId } = useCart();
 
   const categories: { key: CategoryFilter; label: string }[] = [
-    { key: "all", label: "All Curations" },
-    { key: "starters", label: "Starters & Raw" },
-    { key: "mains", label: "Chef's Mains" },
-    { key: "pasta", label: "Handcrafted Pasta" },
-    { key: "grill", label: "Charcoal & Grill" },
+    { key: "all", label: "All Items" },
+    { key: "grill", label: "Burgers & Grill" },
+    { key: "starters", label: "Sides & Starters" },
+    { key: "mains", label: "Chef's Specials" },
+    { key: "pasta", label: "Pasta & Bowls" },
     { key: "desserts", label: "Desserts" },
-    { key: "drinks", label: "Cocktails & Cellar" },
+    { key: "drinks", label: "Drinks & Shakes" },
   ];
 
   const dietaryOptions = [
-    { key: "all", label: "All Items" },
-    { key: "Chef's Signature", label: "Chef's Signatures" },
+    { key: "all", label: "All" },
+    { key: "Chef's Signature", label: "Popular" },
     { key: "Vegetarian", label: "Vegetarian" },
     { key: "Gluten-Free", label: "Gluten-Free" },
   ];
@@ -57,21 +57,15 @@ export default function MenuSection() {
   }, [selectedCategory, searchQuery, dietaryFilter]);
 
   return (
-    <section id="menu" className="py-24 sm:py-32 relative bg-white overflow-hidden">
+    <section id="menu" className="py-24 sm:py-32 relative bg-white overflow-hidden scroll-mt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-600/30 bg-amber-500/10 text-amber-800 text-xs uppercase tracking-[0.16em] font-medium mb-4">
-            <Utensils className="w-3.5 h-3.5 text-amber-700" />
-            <span>À La Carte &amp; Curations</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl font-bold text-stone-900 tracking-tight mb-4">
-            The Autumn Gastronomy{" "}
-            <span className="text-amber-800 font-semibold">Collection</span>
+        <div className="text-center max-w-2xl mx-auto mb-14">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 tracking-tight mb-3">
+            Our Menu
           </h2>
-          <p className="text-stone-600 text-sm sm:text-base">
-            Every dish is conceptualized around peak-season provenance, cooked with elemental flame,
-            and plated with surgical precision.
+          <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+            Fresh flame-grilled burgers, crispy loaded sides, desserts, and handcrafted milkshakes.
           </p>
         </div>
 
@@ -145,7 +139,7 @@ export default function MenuSection() {
         {filteredItems.length === 0 ? (
           <div className="text-center py-20 bg-stone-50 rounded-3xl border border-stone-200">
             <Utensils className="w-10 h-10 text-stone-400 mx-auto mb-4" />
-            <p className="text-stone-700 font-serif text-lg">No dishes found matching your criteria.</p>
+            <p className="text-stone-700 text-lg font-medium">No dishes found matching your search.</p>
             <button
               onClick={() => {
                 setSelectedCategory("all");
@@ -217,12 +211,12 @@ export default function MenuSection() {
                         {item.description}
                       </p>
 
-                      {/* Wine Pairing recommendation */}
+                      {/* Recommended Pairing */}
                       {item.winePairing && (
                         <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200/80 mb-4 flex items-start gap-2 text-xs text-amber-900">
                           <Wine className="w-3.5 h-3.5 flex-shrink-0 text-amber-700 mt-0.5" />
                           <span className="leading-tight">
-                            <strong className="text-amber-800 font-medium">Sommelier Note:</strong>{" "}
+                            <strong className="text-amber-800 font-semibold">Pairs with:</strong>{" "}
                             {item.winePairing}
                           </span>
                         </div>
