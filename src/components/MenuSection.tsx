@@ -8,7 +8,6 @@ import {
   Search,
   Plus,
   Check,
-  Wine,
   Sparkles,
   Flame,
 } from "lucide-react";
@@ -207,20 +206,9 @@ export default function MenuSection() {
                       <h3 className="text-lg text-stone-900 font-semibold group-hover:text-amber-700 transition-colors mb-2">
                         {item.name}
                       </h3>
-                      <p className="text-stone-600 text-xs sm:text-sm leading-relaxed mb-4">
+                      <p className="text-stone-600 text-xs sm:text-sm leading-relaxed">
                         {item.description}
                       </p>
-
-                      {/* Recommended Pairing */}
-                      {item.winePairing && (
-                        <div className="p-2.5 rounded-xl bg-amber-50 border border-amber-200/80 mb-4 flex items-start gap-2 text-xs text-amber-900">
-                          <Wine className="w-3.5 h-3.5 flex-shrink-0 text-amber-700 mt-0.5" />
-                          <span className="leading-tight">
-                            <strong className="text-amber-800 font-semibold">Pairs with:</strong>{" "}
-                            {item.winePairing}
-                          </span>
-                        </div>
-                      )}
                     </div>
                   </div>
 

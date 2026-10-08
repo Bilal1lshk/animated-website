@@ -1,8 +1,16 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ChevronDown, Sparkles, Utensils, ShoppingBag } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  Sparkles,
+  Flame,
+  Utensils,
+  ShoppingBag,
+  Star,
+  Clock,
+  ChevronDown,
+} from "lucide-react";
 
 export interface ScrollVideoHeroProps {
   /**
@@ -18,199 +26,113 @@ export default function ScrollVideoHero({
   posterSrc,
   className = "",
 }: ScrollVideoHeroProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const hasStartedRef = useRef(false);
-
-  // Vertical scroll tracking across 320vh
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  // Video subtle zoom in at the start of scrolling (from 1.0 to 1.12)
-  const videoScale = useTransform(scrollYProgress, [0, 0.30], [1.0, 1.12]);
-
-  // Scene 1: Slides in from LEFT (0.00 -> 0.30)
-  const scene1Opacity = useTransform(scrollYProgress, [0, 0.08, 0.22, 0.32], [0.8, 1, 1, 0]);
-  const scene1X = useTransform(scrollYProgress, [0, 0.08, 0.24, 0.32], [-70, 0, 0, -90]);
-
-  // Scene 2: Slides in from RIGHT (0.33 -> 0.66)
-  const scene2Opacity = useTransform(scrollYProgress, [0.32, 0.42, 0.58, 0.67], [0, 1, 1, 0]);
-  const scene2X = useTransform(scrollYProgress, [0.32, 0.42, 0.58, 0.67], [90, 0, 0, 90]);
-
-  // Scene 3: Slides in from LEFT with CTAs (0.68 -> 1.00)
-  const scene3Opacity = useTransform(scrollYProgress, [0.68, 0.78, 0.95, 1.0], [0, 1, 1, 1]);
-  const scene3X = useTransform(scrollYProgress, [0.68, 0.78], [-90, 0]);
-
-  // Progress Bar / Indicator
-  const progressHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
-
-    // Normal natural 1.0x playback speed
-    video.playbackRate = 1.0;
-    video.muted = true;
-
-    // Start video on user scroll (wheel, touch, or window scroll)
-    const startVideoOnScroll = () => {
-      if (!hasStartedRef.current && video) {
-        hasStartedRef.current = true;
-        video.play().catch(() => {});
-      }
-    };
-
-    window.addEventListener("scroll", startVideoOnScroll, { passive: true });
-    window.addEventListener("wheel", startVideoOnScroll, { passive: true });
-    window.addEventListener("touchmove", startVideoOnScroll, { passive: true });
-
-    // Intersection observer to pause offscreen, play when in view
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Auto play while in view once scrolling has initiated
-            if (hasStartedRef.current) {
-              video.play().catch(() => {});
-            }
-          } else {
-            video.pause();
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
+    if (video) {
+      video.playbackRate = 1.0;
+      video.muted = true;
+      video.play().catch(() => {});
     }
-
-    return () => {
-      window.removeEventListener("scroll", startVideoOnScroll);
-      window.removeEventListener("wheel", startVideoOnScroll);
-      window.removeEventListener("touchmove", startVideoOnScroll);
-      observer.disconnect();
-    };
   }, []);
 
   return (
     <section
-      ref={containerRef}
-      className={`relative w-full h-[320vh] bg-[#E5E5E5] ${className}`}
-      style={{ backgroundColor: "#E5E5E5" }}
+      className={`relative w-full bg-[#DDDDDD] text-stone-900 overflow-hidden ${className}`}
+      style={{ backgroundColor: "#DDDDDD" }}
     >
-      {/* Sticky Viewport Stage */}
-      <div
-        className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center bg-[#E5E5E5]"
-        style={{ backgroundColor: "#E5E5E5" }}
-      >
-        {/* Background & Centered Video with Start-of-Scroll Zoom anchored to top of div / end of nav */}
-        <motion.div
-          style={{ scale: videoScale, transformOrigin: "top center" }}
-          className="absolute inset-0 flex items-center justify-center bg-[#E5E5E5] will-change-transform origin-top"
-        >
-          <video
-            ref={videoRef}
-            src={videoSrc}
-            poster={posterSrc}
-            playsInline
-            muted
-            loop
-            preload="auto"
-            className="w-full h-full object-contain block bg-[#E5E5E5] origin-top"
-            style={{ backgroundColor: "#E5E5E5", transformOrigin: "top center" }}
-          >
-            <source src={videoSrc} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </motion.div>
-
-        {/* Text Overlays: Positioned on Left and Right (Not directly blocking burger video) */}
-        <div className="relative z-10 w-full h-full max-w-7xl mx-auto px-6 sm:px-10 lg:px-16 pointer-events-none flex items-center">
-          {/* Scene 1: Introduction (From LEFT) */}
+      {/* Main Hero Container */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 lg:pt-16 pb-8 sm:pb-12">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          
+          {/* Left Column (Desktop) / Top Section (Mobile): Clean Headline & CTAs */}
           <motion.div
-            style={{ opacity: scene1Opacity, x: scene1X }}
-            className="absolute left-6 sm:left-10 lg:left-16 top-1/2 -translate-y-1/2 w-[85%] max-w-sm sm:max-w-md text-left z-10"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="lg:col-span-6 text-center lg:text-left z-10 flex flex-col items-center lg:items-start"
           >
-            <div className="backdrop-blur-md bg-[#E5E5E5]/80 border border-stone-300/80 p-6 sm:p-8 rounded-2xl shadow-xs">
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-stone-900 leading-[1.12] mb-3">
-                Crafted Fresh <br />
-                <span className="text-amber-800 font-semibold">Every Single Day</span>
-              </h1>
-              <p className="text-stone-600 text-xs sm:text-sm md:text-base leading-relaxed mb-6">
-                Flame-grilled beef, warm toasted brioche, and house-made signature sauce.
-              </p>
-              <div className="flex items-center gap-2 text-[11px] font-medium uppercase tracking-widest text-stone-500 animate-bounce">
-                <span>Scroll down</span>
-                <ChevronDown className="w-3.5 h-3.5" />
+        
+            {/* Main Headline */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-stone-900 leading-[1.1] mb-4">
+              Crafted Fresh <br />
+              <span className="text-amber-800">Every Single Day</span>
+            </h1>
+
+            {/* Subtitle */}
+            <p className="text-stone-600 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl mb-6">
+              100% prime beef seared over real wood embers, nestled in warm toasted brioche
+              with house-made signature sauce and crisp garden produce.
+            </p>
+
+           
+            {/* CTA Action Buttons */}
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto mb-6">
+              <a
+                href="#reservation"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 shadow-md transition-all duration-300 cursor-pointer text-center hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <ShoppingBag className="w-4 h-4" />
+                <span>Order Online</span>
+              </a>
+              <a
+                href="#menu"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-stone-800 bg-white/90 hover:bg-white border border-stone-300 shadow-xs transition-all duration-300 cursor-pointer text-center hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <Utensils className="w-4 h-4" />
+                <span>View Menu</span>
+              </a>
+            </div>
+
+            {/* Quick Ratings & Speed Stats */}
+            <div className="flex items-center gap-6 pt-4 border-t border-stone-300/60 text-xs text-stone-600">
+              <div className="flex items-center gap-1.5">
+                <div className="flex text-amber-600">
+                  <Star className="w-3.5 h-3.5 fill-amber-500" />
+                </div>
+                <span className="font-semibold text-stone-900">4.9 / 5</span>
+                <span>(1,200+ reviews)</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-stone-500" />
+                <span>15 min avg. preparation</span>
               </div>
             </div>
           </motion.div>
 
-          {/* Scene 2: Craft & Ingredients (From RIGHT) */}
+          {/* Right Column (Desktop) / Center Visual (Mobile): 100% Unobstructed Burger Video */}
           <motion.div
-            style={{ opacity: scene2Opacity, x: scene2X }}
-            className="absolute right-6 sm:right-10 lg:right-16 top-1/2 -translate-y-1/2 w-[85%] max-w-sm sm:max-w-md text-left z-10"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.7, delay: 0.15 }}
+            className="lg:col-span-6 w-full flex items-center justify-center relative"
           >
-            <div className="backdrop-blur-md bg-[#E5E5E5]/80 border border-stone-300/80 p-6 sm:p-8 rounded-2xl shadow-xs">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-stone-900 leading-[1.12] mb-3">
-                100% Prime Beef <br />
-                <span className="text-amber-800 font-semibold">&amp; Real Embers</span>
-              </h2>
-              <p className="text-stone-600 text-xs sm:text-sm md:text-base leading-relaxed">
-                Charcoal-seared beef patty topped with aged cheddar, crisp lettuce, and caramelized sweet onions.
-              </p>
+            {/* The Video Container with NO glassy overlay on top */}
+            <div className="relative w-full max-w-lg lg:max-w-xl aspect-[16/9] flex items-center justify-center">
+              <video
+                ref={videoRef}
+                src={videoSrc}
+                poster={posterSrc}
+                autoPlay
+                playsInline
+                muted
+                loop
+                preload="auto"
+                className="w-full h-full object-contain block bg-[#DDDDDD]"
+                style={{ backgroundColor: "#DDDDDD" }}
+              >
+                <source src={videoSrc} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
             </div>
           </motion.div>
 
-          {/* Scene 3: Grand Tasting & CTA (From LEFT) */}
-          <motion.div
-            style={{ opacity: scene3Opacity, x: scene3X }}
-            className="absolute left-6 sm:left-10 lg:left-16 top-1/2 -translate-y-1/2 w-[85%] max-w-sm sm:max-w-md text-left z-10 pointer-events-auto"
-          >
-            <div className="backdrop-blur-md bg-[#E5E5E5]/80 border border-stone-300/80 p-6 sm:p-8 rounded-2xl shadow-xs">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-stone-900 leading-[1.12] mb-3">
-                Taste the <br />
-                <span className="text-amber-800 font-semibold">Difference</span>
-              </h2>
-              <p className="text-stone-600 text-xs sm:text-sm md:text-base leading-relaxed mb-6">
-                Order your favorites online for fast pickup or delivery.
-              </p>
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <a
-                  href="#reservation"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 shadow-md transition-all duration-300 cursor-pointer text-center"
-                >
-                  <ShoppingBag className="w-3.5 h-3.5" />
-                  <span>Order Online</span>
-                </a>
-                <a
-                  href="#menu"
-                  className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-stone-800 bg-white/90 hover:bg-white border border-stone-300 shadow-xs transition-all duration-300 cursor-pointer text-center"
-                >
-                  <Utensils className="w-3.5 h-3.5" />
-                  <span>View Menu</span>
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Vertical Scroll Progress Bar (Right Side) */}
-        <div className="hidden lg:flex absolute right-6 top-1/2 -translate-y-1/2 flex-col items-center gap-3 z-20 pointer-events-none">
-          <span className="text-[10px] font-mono tracking-widest text-stone-500 uppercase">01</span>
-          <div className="w-[2px] h-24 bg-stone-300 rounded-full overflow-hidden">
-            <motion.div
-              style={{ height: progressHeight }}
-              className="w-full bg-stone-800 origin-top"
-            />
-          </div>
-          <span className="text-[10px] font-mono tracking-widest text-stone-500 uppercase">03</span>
         </div>
       </div>
+
+      {/* Seamless Transition Gradient to eliminate wide space after video section */}
+      <div className="w-full h-10 sm:h-14 bg-gradient-to-b from-[#DDDDDD] to-white" />
     </section>
   );
 }
-
