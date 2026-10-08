@@ -3,7 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Compass, Flame, Leaf, Sparkles, Utensils } from "lucide-react";
+import { Compass, Flame, Leaf, Utensils } from "lucide-react";
+import Tag from "@/components/Tag";
 
 export default function AboutSection() {
   const pillars = [
@@ -61,10 +62,8 @@ export default function AboutSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
-                  <span className="text-[10px] uppercase tracking-widest text-amber-300 font-medium">
-                    The Grill
-                  </span>
-                  <p className="text-white text-sm font-semibold">Chef Antoine Laurent</p>
+                  <Tag variant="dark">The grill</Tag>
+                  <p className="text-white text-sm font-semibold mt-1">Chef Antoine Laurent</p>
                 </div>
               </motion.div>
 
@@ -84,10 +83,8 @@ export default function AboutSection() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute bottom-4 left-4 right-4">
-                  <span className="text-[10px] uppercase tracking-widest text-amber-300 font-medium">
-                    Quality
-                  </span>
-                  <p className="text-white text-sm font-semibold">Fresh Daily Sourcing</p>
+                  <Tag variant="dark">Quality sourcing</Tag>
+                  <p className="text-white text-sm font-semibold mt-1">Fresh Daily Sourcing</p>
                 </div>
               </motion.div>
             </div>
@@ -101,12 +98,12 @@ export default function AboutSection() {
               className="absolute -bottom-6 left-1/2 -translate-x-1/2 sm:left-12 sm:translate-x-0 bg-white px-6 py-4 rounded-2xl shadow-lg border border-stone-200 flex items-center gap-4 text-left"
             >
               <div className="w-11 h-11 rounded-xl bg-amber-500/10 border border-amber-600/30 flex items-center justify-center text-amber-700">
-                <Sparkles className="w-5 h-5" />
+                <Flame className="w-5 h-5" />
               </div>
               <div>
                 <div className="text-lg font-bold text-stone-900">10+ Years</div>
-                <div className="text-[11px] uppercase tracking-wider text-stone-500">
-                  Of Culinary Passion
+                <div className="text-xs text-stone-500 font-medium">
+                  Culinary experience
                 </div>
               </div>
             </motion.div>

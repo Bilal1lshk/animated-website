@@ -9,10 +9,10 @@ import {
   Minus,
   Trash2,
   ShoppingBag,
-  Sparkles,
   ArrowRight,
   CheckCircle2,
 } from "lucide-react";
+import Tag from "@/components/Tag";
 import { useCart } from "@/context/CartContext";
 
 export default function CartDrawer() {
@@ -96,7 +96,7 @@ export default function CartDrawer() {
               <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 {checkoutStep === "processing" ? (
                   <div className="h-full flex flex-col items-center justify-center text-center py-20">
-                    <Sparkles className="w-10 h-10 text-amber-600 animate-spin mb-4" />
+                    <div className="w-9 h-9 border-2 border-stone-200 border-t-amber-600 rounded-full animate-spin mb-4" />
                     <h3 className="text-xl font-bold text-stone-900">Sending Order to Kitchen...</h3>
                     <p className="text-xs text-stone-500 mt-2">
                       Please wait a moment while we send your ticket.
@@ -107,9 +107,9 @@ export default function CartDrawer() {
                     <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 mb-4">
                       <CheckCircle2 className="w-9 h-9" />
                     </div>
-                    <span className="text-xs uppercase tracking-widest text-emerald-700 font-semibold">
-                      Order Confirmed
-                    </span>
+                    <div className="mb-2">
+                      <Tag variant="success">Order confirmed</Tag>
+                    </div>
                     <h3 className="text-2xl font-bold text-stone-900 mt-2 mb-3">
                       Order Placed Successfully!
                     </h3>

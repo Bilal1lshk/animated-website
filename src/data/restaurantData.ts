@@ -33,11 +33,11 @@ export interface TastingCourse {
 }
 
 export const RESTAURANT_INFO = {
-  name: "The Golden Star",
-  tagline: "Craft Kitchen & Flame-Grilled Burgers",
+  name: "Ember & Oak",
+  tagline: "Craft Kitchen & Woodfire Grill",
   address: "142 Market Street, Downtown",
   phone: "+1 (555) 234-5678",
-  email: "hello@thegoldenstar.com",
+  email: "hello@emberandoak.com",
   hours: {
     lunch: "Monday – Sunday: 11:30 AM – 3:30 PM",
     dinner: "Monday – Sunday: 5:00 PM – 11:00 PM",

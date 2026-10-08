@@ -4,15 +4,14 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  UtensilsCrossed,
   ShoppingBag,
   Menu as MenuIcon,
   X,
-  Sparkles,
   Phone,
   Clock,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import BrandLogo from "@/components/BrandLogo";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -49,19 +48,9 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          {/* Logo */}
-          <Link href="/" className="group flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-full border border-amber-600/30 bg-amber-500/10 flex items-center justify-center text-amber-700 group-hover:border-amber-600 group-hover:scale-105 transition-all duration-300">
-              <UtensilsCrossed className="w-4 h-4" />
-            </div>
-            <div>
-              <span className="text-lg sm:text-xl font-bold tracking-tight text-stone-900 group-hover:text-amber-700 transition-colors">
-                The Golden Star
-              </span>
-              <span className="hidden sm:block text-[10px] tracking-[0.2em] text-stone-500 uppercase font-semibold">
-                Craft Kitchen &amp; Grill
-              </span>
-            </div>
+          {/* Brand Logo */}
+          <Link href="/" className="group flex items-center">
+            <BrandLogo size="sm" />
           </Link>
 
           {/* Desktop Navigation Links (Max 4 clean items) */}

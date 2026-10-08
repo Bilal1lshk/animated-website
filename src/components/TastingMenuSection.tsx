@@ -5,15 +5,14 @@ import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   GlassWater,
-  Sparkles,
   ShoppingBag,
   Check,
   Flame,
   ArrowRight,
-  Star,
   CheckCircle2,
-  UtensilsCrossed,
 } from "lucide-react";
+import Eyebrow from "@/components/Eyebrow";
+import Tag from "@/components/Tag";
 import { TASTING_COURSES, MenuItem } from "@/data/restaurantData";
 import { useCart } from "@/context/CartContext";
 
@@ -107,10 +106,7 @@ export default function TastingMenuSection() {
         
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-900 text-xs font-semibold uppercase tracking-wider mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-            <span>Value Combos &amp; Feasts</span>
-          </div>
+          <Eyebrow withLine>Combos and feasts</Eyebrow>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 tracking-tight mb-3">
             Combo Meals
           </h2>
@@ -131,15 +127,14 @@ export default function TastingMenuSection() {
                 transition={{ duration: 0.3 }}
                 className={`relative rounded-3xl bg-white flex flex-col justify-between overflow-hidden transition-all duration-300 ${
                   tier.popular
-                    ? "border-2 border-amber-500 shadow-2xl ring-4 ring-amber-500/10 z-10 lg:-translate-y-2"
+                    ? "border-2 border-amber-500 shadow-xl z-10 lg:-translate-y-2"
                     : "border border-stone-200/90 shadow-sm hover:shadow-xl hover:border-amber-400/80"
                 }`}
               >
-                {/* Most Popular Floating Badge */}
+                {/* Popular Tag (Clean 6px radius, no glows) */}
                 {tier.popular && (
-                  <div className="absolute top-4 right-4 z-20 inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-amber-500 text-white text-[11px] font-bold uppercase tracking-wider shadow-lg">
-                    <Sparkles className="w-3.5 h-3.5 fill-white" />
-                    <span>Most Popular</span>
+                  <div className="absolute top-3 right-3 z-20">
+                    <Tag variant="accent">Popular</Tag>
                   </div>
                 )}
 
@@ -156,10 +151,8 @@ export default function TastingMenuSection() {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
                     
                     {/* Bottom Tag on Image */}
-                    <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-white text-xs">
-                      <span className="font-medium bg-black/50 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20">
-                        {tier.subtitle}
-                      </span>
+                    <div className="absolute bottom-3 left-3">
+                      <Tag variant="dark">{tier.subtitle}</Tag>
                     </div>
                   </div>
 
@@ -179,8 +172,8 @@ export default function TastingMenuSection() {
                     </div>
 
                     {/* Savings Tag */}
-                    <div className="inline-block px-2.5 py-1 rounded-md bg-emerald-50 text-emerald-800 text-[11px] font-semibold border border-emerald-200/70 mb-4">
-                      {tier.savings}
+                    <div className="mb-4">
+                      <Tag variant="success">{tier.savings}</Tag>
                     </div>
 
                     {/* Drink Tier Highlight */}
@@ -191,7 +184,7 @@ export default function TastingMenuSection() {
 
                     {/* Itemized Feature Checklist */}
                     <div className="space-y-2.5 mb-6 pt-3 border-t border-stone-100">
-                      <div className="text-[11px] uppercase tracking-wider font-semibold text-stone-500 mb-2">
+                      <div className="text-xs text-stone-500 font-medium mb-2">
                         Included in this combo:
                       </div>
                       {tier.itemsIncluded.map((item, idx) => (
@@ -251,7 +244,7 @@ export default function TastingMenuSection() {
           </div>
 
           {/* Responsive Course Selector Tabs */}
-          {/* Mobile / Tablet Horizontal Scrollable Pills (No text cut-off!) */}
+          {/* Mobile / Tablet Horizontal Scrollable Pills */}
           <div className="flex lg:hidden items-center gap-2 overflow-x-auto pb-4 mb-6 w-full scrollbar-none">
             {TASTING_COURSES.map((course, idx) => {
               const isActive = activeCourseIdx === idx;
@@ -259,13 +252,13 @@ export default function TastingMenuSection() {
                 <button
                   key={course.courseNumber}
                   onClick={() => setActiveCourseIdx(idx)}
-                  className={`px-4 py-2.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all duration-300 cursor-pointer flex items-center gap-2 border flex-shrink-0 ${
+                  className={`px-3.5 py-2 rounded-[6px] text-xs font-medium whitespace-nowrap transition-colors cursor-pointer flex items-center gap-2 border flex-shrink-0 ${
                     isActive
-                      ? "bg-amber-500 text-white border-amber-500 shadow-md scale-102"
-                      : "bg-stone-100 text-stone-700 hover:bg-stone-200 border-stone-200"
+                      ? "bg-stone-900 text-white border-stone-900"
+                      : "bg-white text-stone-700 hover:bg-stone-50 border-stone-200"
                   }`}
                 >
-                  <span className={isActive ? "text-amber-100" : "text-amber-800 font-bold"}>
+                  <span className={isActive ? "text-stone-300" : "text-stone-500 font-medium"}>
                     0{course.courseNumber}
                   </span>
                   <span>{course.title}</span>
@@ -275,7 +268,7 @@ export default function TastingMenuSection() {
           </div>
 
           <div className="flex flex-col lg:flex-row gap-8 items-start">
-            {/* Desktop Left Column: Full-width clean vertical selector cards (No truncate bug!) */}
+            {/* Desktop Left Column: Full-width clean vertical selector cards */}
             <div className="hidden lg:flex lg:w-1/3 flex-col gap-2.5 w-full">
               {TASTING_COURSES.map((course, idx) => {
                 const isActive = activeCourseIdx === idx;
@@ -290,7 +283,7 @@ export default function TastingMenuSection() {
                     }`}
                   >
                     <div className="pr-2">
-                      <div className="text-[10px] uppercase tracking-widest text-amber-800 font-semibold mb-1">
+                      <div className="text-xs text-stone-500 font-medium mb-1">
                         Item 0{course.courseNumber} • {course.title}
                       </div>
                       <div className="text-sm font-semibold text-stone-900 leading-snug">
@@ -298,7 +291,7 @@ export default function TastingMenuSection() {
                       </div>
                     </div>
                     <div
-                      className={`w-2.5 h-2.5 rounded-full flex-shrink-0 ${
+                      className={`w-2 h-2 rounded-full flex-shrink-0 ${
                         isActive ? "bg-amber-600" : "bg-transparent"
                       }`}
                     />
@@ -327,10 +320,10 @@ export default function TastingMenuSection() {
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
-                    <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                      <span className="px-3 py-1 rounded-full bg-black/60 backdrop-blur-md text-amber-300 text-xs font-semibold uppercase tracking-wider border border-white/20">
+                    <div className="absolute bottom-3 left-3">
+                      <Tag variant="dark">
                         Item 0{currentCourse.courseNumber} • {currentCourse.title}
-                      </span>
+                      </Tag>
                     </div>
                   </div>
 
@@ -343,9 +336,9 @@ export default function TastingMenuSection() {
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-5 border-t border-stone-200">
-                    <div className="p-3.5 rounded-xl bg-white border border-amber-200/80">
-                      <div className="flex items-center gap-2 text-amber-800 text-[11px] uppercase tracking-wider font-semibold mb-1">
-                        <GlassWater className="w-3.5 h-3.5 text-amber-700" /> Pairing Recommendation
+                    <div className="p-3.5 rounded-xl bg-white border border-stone-200">
+                      <div className="flex items-center gap-2 text-stone-500 text-xs font-medium mb-1">
+                        <GlassWater className="w-3.5 h-3.5 text-stone-600" /> Pairing recommendation
                       </div>
                       <div className="text-stone-900 text-xs sm:text-sm font-semibold">
                         {currentCourse.winePairing}
@@ -353,8 +346,8 @@ export default function TastingMenuSection() {
                     </div>
 
                     <div className="p-3.5 rounded-xl bg-white border border-stone-200">
-                      <div className="flex items-center gap-2 text-stone-600 text-[11px] uppercase tracking-wider font-semibold mb-1">
-                        <Flame className="w-3.5 h-3.5 text-amber-600" /> Sourcing &amp; Preparation
+                      <div className="flex items-center gap-2 text-stone-500 text-xs font-medium mb-1">
+                        <Flame className="w-3.5 h-3.5 text-stone-600" /> Sourcing &amp; preparation
                       </div>
                       <div className="text-stone-900 text-xs sm:text-sm font-semibold">
                         {currentCourse.origin}

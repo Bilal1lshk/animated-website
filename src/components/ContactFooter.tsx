@@ -6,11 +6,10 @@ import {
   Phone,
   Clock,
   Send,
-  UtensilsCrossed,
   CheckCircle,
-  Sparkles,
 } from "lucide-react";
 import { RESTAURANT_INFO } from "@/data/restaurantData";
+import BrandLogo from "@/components/BrandLogo";
 
 export default function ContactFooter() {
   const [email, setEmail] = useState("");
@@ -35,8 +34,8 @@ export default function ContactFooter() {
               <Clock className="w-6 h-6" />
             </div>
             <div>
-              <div className="text-xs uppercase tracking-widest text-amber-800 font-semibold">
-                Opening Hours
+              <div className="text-xs text-stone-500 font-medium">
+                Opening hours
               </div>
               <div className="text-stone-900 text-base font-semibold">
                 Mon – Sun: 11:30 AM – 11:00 PM
@@ -52,7 +51,7 @@ export default function ContactFooter() {
               <MapPin className="w-6 h-6" />
             </div>
             <div>
-              <div className="text-xs uppercase tracking-widest text-amber-800 font-semibold">
+              <div className="text-xs text-stone-500 font-medium">
                 Location
               </div>
               <div className="text-stone-900 text-base font-semibold">
@@ -69,8 +68,8 @@ export default function ContactFooter() {
               <Phone className="w-6 h-6" />
             </div>
             <div>
-              <div className="text-xs uppercase tracking-widest text-amber-800 font-semibold">
-                Call Us
+              <div className="text-xs text-stone-500 font-medium">
+                Call us
               </div>
               <a
                 href={`tel:${RESTAURANT_INFO.phone}`}
@@ -89,21 +88,15 @@ export default function ContactFooter() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 mb-16">
           {/* Brand Info */}
           <div className="lg:col-span-4">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-9 h-9 rounded-full border border-amber-600/30 bg-amber-500/10 flex items-center justify-center text-amber-700">
-                <UtensilsCrossed className="w-4 h-4" />
-              </div>
-              <span className="text-xl font-bold tracking-tight text-stone-900">
-                {RESTAURANT_INFO.name}
-              </span>
+            <div className="mb-4">
+              <BrandLogo size="md" />
             </div>
             <p className="text-stone-600 text-xs sm:text-sm leading-relaxed mb-6 max-w-sm">
               Handcrafted burgers grilled over real embers, crispy sides, and fresh milkshakes. Simple, honest, and delicious food every single day.
             </p>
-            <div className="flex items-center gap-2 text-xs text-amber-800 font-medium">
-              <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-              <span>Dine-In • Takeaway • Fast Pickup</span>
-            </div>
+            <p className="text-xs text-stone-500 font-medium">
+              Dine-in • Takeaway • Fast pickup
+            </p>
           </div>
 
           {/* Quick Links */}

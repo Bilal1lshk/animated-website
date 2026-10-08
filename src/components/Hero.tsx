@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import {
-  Sparkles,
   ArrowRight,
   Star,
   Plus,
@@ -50,13 +49,7 @@ export default function Hero() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="lg:col-span-7 text-center lg:text-left"
           >
-            {/* Michelin Tag Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-amber-400/30 bg-amber-500/10 backdrop-blur-md mb-6">
-              <Sparkles className="w-4 h-4 text-amber-400 animate-spin" style={{ animationDuration: "8s" }} />
-              <span className="text-xs uppercase tracking-[0.2em] font-medium text-amber-300">
-                Michelin Guide Recommended • 2026 Season
-              </span>
-            </div>
+
 
             {/* Main Headline */}
             <h1 className="font-serif text-4xl sm:text-6xl xl:text-7xl font-light tracking-tight text-white leading-[1.1] mb-6">

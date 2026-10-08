@@ -15,8 +15,8 @@ import {
   Bike,
   Store,
   UtensilsCrossed,
-  Sparkles,
 } from "lucide-react";
+import Tag from "@/components/Tag";
 import { useCart } from "@/context/CartContext";
 import { MENU_ITEMS, MenuItem } from "@/data/restaurantData";
 
@@ -463,9 +463,9 @@ export default function ReservationSection() {
                 <CheckCircle2 className="w-8 h-8" />
               </div>
 
-              <span className="text-[11px] uppercase tracking-widest text-emerald-700 font-semibold font-mono">
-                Order Received
-              </span>
+              <div className="mb-2">
+                <Tag variant="success">Order received</Tag>
+              </div>
               <h3 className="text-2xl font-bold text-stone-900 mt-1 mb-2">
                 Order Placed Successfully!
               </h3>

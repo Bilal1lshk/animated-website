@@ -8,9 +8,9 @@ import {
   Search,
   Plus,
   Check,
-  Sparkles,
   Flame,
 } from "lucide-react";
+import Tag from "@/components/Tag";
 import { MENU_ITEMS } from "@/data/restaurantData";
 import { useCart } from "@/context/CartContext";
 
@@ -178,25 +178,17 @@ export default function MenuSection() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
 
-                      {/* Tag Badges */}
-                      <div className="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                        {item.isChefSpecial && (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-semibold uppercase tracking-wider bg-amber-500 text-white shadow-md">
-                            <Sparkles className="w-3 h-3" /> Special
-                          </span>
-                        )}
-                        {item.tags.map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider bg-black/60 backdrop-blur-md border border-white/20 text-white"
-                          >
-                            {tag}
-                          </span>
-                        ))}
+                      {/* Card Tag (Max 1 per card) */}
+                      <div className="absolute top-3 left-3">
+                        {item.isChefSpecial ? (
+                          <Tag variant="accent">Chef&apos;s special</Tag>
+                        ) : item.tags.length > 0 ? (
+                          <Tag variant="dark">{item.tags[0]}</Tag>
+                        ) : null}
                       </div>
 
-                      {/* Price Pill */}
-                      <div className="absolute bottom-3 right-3 px-3 py-1 rounded-full bg-white/95 backdrop-blur-md border border-stone-200 text-stone-900 text-base font-bold shadow-xs">
+                      {/* Price Tag */}
+                      <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-[6px] bg-white border border-stone-200 text-stone-900 text-sm font-semibold shadow-xs">
                         ${item.price}
                       </div>
                     </div>

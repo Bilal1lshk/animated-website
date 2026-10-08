@@ -9,15 +9,15 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "The Golden Star | Craft Kitchen & Flame-Grilled Burgers",
+  title: "Ember & Oak | Craft Kitchen & Woodfire Grill",
   description:
-    "Fresh flame-grilled burgers, crispy loaded fries, handcrafted shakes, and casual dining made fresh daily.",
+    "Prime beef seared over real wood embers, handcrafted brioche burgers, loaded sides, and casual dining made fresh daily.",
   keywords: [
-    "Craft Burgers",
+    "Ember & Oak",
+    "Craft Kitchen",
+    "Woodfire Grill",
+    "Artisan Burgers",
     "Flame Grilled",
-    "Burger Restaurant",
-    "Loaded Fries",
-    "Milkshakes",
     "Table Booking",
     "Takeaway Food",
   ],
