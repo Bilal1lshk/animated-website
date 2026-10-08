@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   Utensils,
   ShoppingBag,
   Clock,
-  Play,
-  Pause,
 } from "lucide-react";
 
 export interface ScrollVideoHeroProps {
@@ -26,9 +24,7 @@ export default function ScrollVideoHero({
 }: ScrollVideoHeroProps) {
   const containerRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const isManuallyPlayingRef = useRef<boolean>(false);
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const hasStartedRef = useRef<boolean>(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -37,56 +33,36 @@ export default function ScrollVideoHero({
     // Ensure video is muted and set to normal playback rate
     video.muted = true;
     video.playbackRate = 1.0;
-    // Explicitly pause on mount — do NOT autoplay automatically
+    // Explicitly pause on mount — do NOT autoplay automatically on page load
     video.pause();
 
-    const handleScrollActivity = () => {
+    // Start video on the very first user scroll interaction
+    const handleFirstScroll = () => {
       const vid = videoRef.current;
       if (!vid) return;
 
-      // Check if video is visible within the viewport
-      const rect = vid.getBoundingClientRect();
-      const inView = rect.bottom > 40 && rect.top < window.innerHeight - 40;
-
-      if (!inView) {
-        if (!vid.paused) {
-          vid.pause();
-          setIsPlaying(false);
-        }
-        return;
-      }
-
-      // Play video as user scrolls
-      if (vid.paused) {
+      if (!hasStartedRef.current) {
+        hasStartedRef.current = true;
         vid.play().catch(() => {});
-        setIsPlaying(true);
       }
-
-      // Debounce: pause after scrolling stops (500ms inactivity window)
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-
-      scrollTimeoutRef.current = setTimeout(() => {
-        if (!isManuallyPlayingRef.current && videoRef.current && !videoRef.current.paused) {
-          videoRef.current.pause();
-          setIsPlaying(false);
-        }
-      }, 500);
     };
 
-    // Listen to wheel, scroll, and touchmove gestures
-    window.addEventListener("scroll", handleScrollActivity, { passive: true });
-    window.addEventListener("wheel", handleScrollActivity, { passive: true });
-    window.addEventListener("touchmove", handleScrollActivity, { passive: true });
+    // Listen to user scroll, wheel, and touch gestures
+    window.addEventListener("scroll", handleFirstScroll, { passive: true });
+    window.addEventListener("wheel", handleFirstScroll, { passive: true });
+    window.addEventListener("touchmove", handleFirstScroll, { passive: true });
 
-    // Intersection observer to pause playback when hero leaves screen
+    // Intersection observer to pause offscreen and resume when in view (if already started)
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (!entry.isIntersecting && videoRef.current) {
+          if (!videoRef.current) return;
+          if (entry.isIntersecting) {
+            if (hasStartedRef.current) {
+              videoRef.current.play().catch(() => {});
+            }
+          } else {
             videoRef.current.pause();
-            setIsPlaying(false);
           }
         });
       },
@@ -98,28 +74,12 @@ export default function ScrollVideoHero({
     }
 
     return () => {
-      window.removeEventListener("scroll", handleScrollActivity);
-      window.removeEventListener("wheel", handleScrollActivity);
-      window.removeEventListener("touchmove", handleScrollActivity);
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      window.removeEventListener("scroll", handleFirstScroll);
+      window.removeEventListener("wheel", handleFirstScroll);
+      window.removeEventListener("touchmove", handleFirstScroll);
       observer.disconnect();
     };
   }, []);
-
-  const toggleManualPlay = () => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (video.paused) {
-      isManuallyPlayingRef.current = true;
-      video.play().catch(() => {});
-      setIsPlaying(true);
-    } else {
-      isManuallyPlayingRef.current = false;
-      video.pause();
-      setIsPlaying(false);
-    }
-  };
 
   return (
     <section
@@ -183,12 +143,8 @@ export default function ScrollVideoHero({
             transition={{ duration: 0.7, delay: 0.15 }}
             className="lg:col-span-6 w-full flex items-center justify-center relative"
           >
-            {/* The Video Container with scroll-driven playback and click-to-play toggle */}
-            <div
-              onClick={toggleManualPlay}
-              className="relative w-full max-w-lg lg:max-w-xl aspect-[16/9] flex items-center justify-center cursor-pointer group"
-              title={isPlaying ? "Click to pause" : "Scroll page or click to play"}
-            >
+            {/* The Video Container with NO button or overlay on top */}
+            <div className="relative w-full max-w-lg lg:max-w-xl aspect-[16/9] flex items-center justify-center">
               <video
                 ref={videoRef}
                 src={videoSrc}
@@ -203,21 +159,6 @@ export default function ScrollVideoHero({
                 <source src={videoSrc} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
-
-              {/* Status Indicator pill */}
-              <div className="absolute bottom-2.5 right-2.5 sm:bottom-3 sm:right-3 z-10 flex items-center gap-1.5 px-3 py-1 rounded-full bg-stone-900/75 hover:bg-stone-900 text-white text-[11px] font-medium backdrop-blur-xs transition-all duration-300 select-none shadow-xs">
-                {isPlaying ? (
-                  <>
-                    <Pause className="w-3 h-3 text-amber-400" />
-                    <span className="text-stone-200">Playing</span>
-                  </>
-                ) : (
-                  <>
-                    <Play className="w-3 h-3 text-amber-400 fill-amber-400" />
-                    <span className="text-stone-200">Scroll to play</span>
-                  </>
-                )}
-              </div>
             </div>
           </motion.div>
 
