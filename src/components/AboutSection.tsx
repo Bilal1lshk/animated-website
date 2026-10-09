@@ -32,14 +32,20 @@ export default function AboutSection() {
     <section id="about" className="pt-8 sm:pt-12 pb-24 sm:pb-32 relative bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16 sm:mb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center max-w-2xl mx-auto mb-16 sm:mb-20"
+        >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 tracking-tight mb-3">
             Our Story
           </h2>
           <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
             Real food, honest craft, and flame-grilled burgers prepared fresh every single day.
           </p>
-        </div>
+        </motion.div>
 
         {/* Visual Story Collage & Narrative */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center mb-20">

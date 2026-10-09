@@ -100,19 +100,34 @@ export default function ScrollVideoHero({
           >
         
             {/* Main Headline */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-stone-900 leading-[1.1] mb-4">
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-stone-900 leading-[1.1] mb-4"
+            >
               Crafted Fresh <br />
               <span className="text-amber-800">Every Single Day</span>
-            </h1>
+            </motion.h1>
 
             {/* Subtitle */}
-            <p className="text-stone-600 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl mb-6">
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+              className="text-stone-600 text-sm sm:text-base md:text-lg leading-relaxed max-w-xl mb-6"
+            >
               100% prime beef seared over real wood embers, nestled in warm toasted brioche
               with house-made signature sauce and crisp garden produce.
-            </p>
+            </motion.p>
 
             {/* CTA Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto mb-6">
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.28, ease: "easeOut" }}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto mb-6"
+            >
               <a
                 href="#reservation"
                 className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full text-xs sm:text-sm font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 shadow-md transition-all duration-300 cursor-pointer text-center hover:scale-[1.02] active:scale-[0.98]"
@@ -127,13 +142,18 @@ export default function ScrollVideoHero({
                 <Utensils className="w-4 h-4" />
                 <span>View Menu</span>
               </a>
-            </div>
+            </motion.div>
 
             {/* Preparation Note */}
-            <div className="flex items-center gap-2 pt-4 border-t border-stone-300/60 text-xs text-stone-600">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.42 }}
+              className="flex items-center gap-2 pt-4 border-t border-stone-300/60 text-xs text-stone-600"
+            >
               <Clock className="w-3.5 h-3.5 text-stone-500" />
               <span>Prepared fresh to order in 15 minutes</span>
-            </div>
+            </motion.div>
           </motion.div>
 
           {/* Right Column (Desktop) / Center Visual (Mobile): 100% Unobstructed Burger Video */}

@@ -105,7 +105,13 @@ export default function TastingMenuSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14 sm:mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center max-w-2xl mx-auto mb-14 sm:mb-16"
+        >
           <Eyebrow withLine>Combos and feasts</Eyebrow>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 tracking-tight mb-3">
             Combo Meals
@@ -114,17 +120,20 @@ export default function TastingMenuSection() {
             Curated combinations featuring our top-rated flame-grilled burgers, loaded sides,
             and handcrafted drinks. Save up to 25% compared to individual items.
           </p>
-        </div>
+        </motion.div>
 
-        {/* Pricing & Meal Cards Grid */}
+        {/* Pricing & Meal Cards Grid (coming in one by one) */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch mb-20">
-          {tiers.map((tier) => {
+          {tiers.map((tier, idx) => {
             const isAdded = recentlyAddedId === tier.id;
             return (
               <motion.div
                 key={tier.id}
+                initial={{ opacity: 0, y: 35 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.55, delay: idx * 0.15 }}
                 whileHover={{ y: -6 }}
-                transition={{ duration: 0.3 }}
                 className={`relative rounded-3xl bg-white flex flex-col justify-between overflow-hidden transition-all duration-300 ${
                   tier.popular
                     ? "border-2 border-amber-500 shadow-xl z-10 lg:-translate-y-2"

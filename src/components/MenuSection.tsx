@@ -39,6 +39,43 @@ export default function MenuSection() {
     { key: "Gluten-Free", label: "Gluten-Free" },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.07,
+        delayChildren: 0.04,
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.96 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.45, ease: "easeOut" as const },
+    },
+    exit: { opacity: 0, scale: 0.95, transition: { duration: 0.2 } },
+  };
+
+  const filterContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.04,
+      },
+    },
+  };
+
+  const filterItemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  };
+
   const filteredItems = useMemo(() => {
     return MENU_ITEMS.filter((item) => {
       const matchesCategory =
@@ -59,23 +96,36 @@ export default function MenuSection() {
     <section id="menu" className="py-24 sm:py-32 relative bg-white overflow-hidden scroll-mt-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center max-w-2xl mx-auto mb-14"
+        >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 tracking-tight mb-3">
             Our Menu
           </h2>
           <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
             Fresh flame-grilled burgers, crispy loaded sides, desserts, and handcrafted milkshakes.
           </p>
-        </div>
+        </motion.div>
 
         {/* Filter & Search Bar Controls */}
         <div className="flex flex-col gap-6 mb-12">
-          {/* Top Category Buttons */}
-          <div className="flex items-center justify-start lg:justify-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+          {/* Top Category Buttons (staggered entrance) */}
+          <motion.div
+            variants={filterContainerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="flex items-center justify-start lg:justify-center gap-2 overflow-x-auto pb-2 scrollbar-none"
+          >
             {categories.map((cat) => {
               const active = selectedCategory === cat.key;
               return (
-                <button
+                <motion.button
+                  variants={filterItemVariants}
                   key={cat.key}
                   onClick={() => setSelectedCategory(cat.key)}
                   className={`px-5 py-2.5 rounded-full text-xs font-medium uppercase tracking-wider whitespace-nowrap transition-all duration-300 cursor-pointer ${
@@ -85,10 +135,10 @@ export default function MenuSection() {
                   }`}
                 >
                   {cat.label}
-                </button>
+                </motion.button>
               );
             })}
-          </div>
+          </motion.div>
 
           {/* Secondary Filter: Search & Dietary Filter Pills */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-stone-200">
@@ -152,18 +202,18 @@ export default function MenuSection() {
           </div>
         ) : (
           <motion.div
-            layout
+            key={selectedCategory + dietaryFilter + searchQuery}
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            <AnimatePresence>
+            <AnimatePresence mode="popLayout">
               {filteredItems.map((item) => (
                 <motion.div
                   layout
                   key={item.id}
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.4 }}
+                  variants={cardVariants}
                   className="group rounded-3xl bg-white border border-stone-200/90 hover:border-amber-500/50 transition-all duration-500 overflow-hidden flex flex-col justify-between hover:shadow-xl hover:-translate-y-1 shadow-sm"
                 >
                   <div>

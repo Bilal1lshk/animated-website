@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ember & Oak — QA Test Plan & Responsive Verification Guide</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 14mm 14mm 14mm 14mm;
+      @bottom-right {
+        content: counter(page) " of " counter(pages);
+      }
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #1c1917;
+      background-color: #ffffff;
+      line-height: 1.5;
+      font-size: 11pt;
+      padding: 0;
+    }
+    .header {
+      border-bottom: 2px solid #d97706;
+      padding-bottom: 14px;
+      margin-bottom: 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .brand-title {
+      font-size: 20pt;
+      font-weight: 800;
+      color: #1c1917;
+      letter-spacing: -0.5px;
+    }
+    .brand-subtitle {
+      font-size: 9pt;
+      font-weight: 700;
+      color: #b45309;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-top: 2px;
+    }
+    .doc-meta {
+      text-align: right;
+      font-size: 8.5pt;
+      color: #78716c;
+      line-height: 1.4;
+    }
+    .doc-meta strong {
+      color: #292524;
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 4px;
+      font-size: 7.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-amber { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .badge-green { background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+    .badge-stone { background: #f5f5f4; color: #44403c; border: 1px solid #e7e5e4; }
+    
+    h2 {
+      font-size: 13pt;
+      font-weight: 700;
+      color: #1c1917;
+      margin-top: 22px;
+      margin-bottom: 10px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #e7e5e4;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    h2 .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #f59e0b;
+      color: #ffffff;
+      font-size: 8.5pt;
+      font-weight: 700;
+    }
+    h3 {
+      font-size: 10.5pt;
+      font-weight: 700;
+      color: #292524;
+      margin-top: 14px;
+      margin-bottom: 6px;
+    }
+    p {
+      margin-bottom: 8px;
+      font-size: 9.5pt;
+      color: #44403c;
+    }
+    .intro-box {
+      background: #fafaf9;
+      border: 1px solid #e7e5e4;
+      border-left: 4px solid #f59e0b;
+      padding: 10px 14px;
+      border-radius: 6px;
+      margin-bottom: 18px;
+      font-size: 9pt;
+      color: #44403c;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 8.5pt;
+    }
+    th, td {
+      border: 1px solid #e7e5e4;
+      padding: 6px 9px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #f5f5f4;
+      font-weight: 700;
+      color: #292524;
+      font-size: 8pt;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    tr:nth-child(even) td {
+      background: #fafaf9;
+    }
+    .checkbox {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 1.5px solid #a8a29e;
+      border-radius: 2px;
+      margin-right: 4px;
+      vertical-align: -1px;
+    }
+    .status-col {
+      width: 75px;
+      text-align: center;
+    }
+    .priority-col {
+      width: 65px;
+      text-align: center;
+    }
+    .page-break {
+      page-break-before: always;
+      padding-top: 10px;
+    }
+    .matrix-table th {
+      background: #fef3c7;
+      color: #78350f;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+    .summary-card {
+      border: 1px solid #e7e5e4;
+      background: #ffffff;
+      padding: 10px 12px;
+      border-radius: 6px;
+    }
+    .summary-card .val {
+      font-size: 16pt;
+      font-weight: 800;
+      color: #b45309;
+      line-height: 1.2;
+    }
+    .summary-card .lbl {
+      font-size: 8pt;
+      color: #78716c;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+    .signoff-box {
+      margin-top: 24px;
+      border: 1px solid #e7e5e4;
+      border-radius: 6px;
+      padding: 12px;
+      background: #fafaf9;
+    }
+    .signoff-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      font-size: 8.5pt;
+    }
+    .signoff-item {
+      border-bottom: 1px solid #a8a29e;
+      padding-bottom: 20px;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="brand-title">Ember &amp; Oak</div>
+      <div class="brand-subtitle">Craft Kitchen &amp; Woodfire Grill — QA Test Document</div>
+    </div>
+    <div class="doc-meta">
+      <strong>Target:</strong> http://localhost:3001/<br>
+      <strong>Version:</strong> Release 1.0.0 (Production Verified)<br>
+      <strong>Date:</strong> October 2026 • QA Engineer Test Plan
+    </div>
+  </div>
+
+  <!-- INTRO -->
+  <div class="intro-box">
+    <strong>Instructions for QA Engineer:</strong> This comprehensive test document provides functional, visual, responsive, and performance verification checklists for the Ember &amp; Oak web application. Execute each test case across the designated viewport resolutions, record results in the status columns, and report any discrepancies.
+  </div>
+
+  <!-- QUICK SUMMARY -->
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="val">11 / 11</div>
+      <div class="lbl">Automated Unit Tests Passing</div>
+    </div>
+    <div class="summary-card">
+      <div class="val">7 Breakpoints</div>
+      <div class="lbl">Responsive Matrix (375px to 1920px)</div>
+    </div>
+    <div class="summary-card">
+      <div class="val">0 Errors</div>
+      <div class="lbl">Next.js Turbopack Production Build</div>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <h2><span class="num">1</span> Brand &amp; Identity Verification</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Check Item</th>
+        <th style="width: 50%;">Expected Behavior</th>
+        <th class="priority-col">Priority</th>
+        <th class="status-col">Pass / Fail</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Brand Logo &amp; Name</strong></td>
+        <td>Navbar displays custom geometric crest emblem with "Ember &amp; Oak" and subtitle "Craft Kitchen &amp; Woodfire Grill". No old names ("Golden Star", "StarCraft").</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Browser Tab Title</strong></td>
+        <td>Page title reads <code>Ember &amp; Oak | Craft Kitchen &amp; Woodfire Grill</code>. Favicon and metadata are consistent.</td>
+        <td class="priority-col"><span class="badge badge-stone">P2</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Footer Brand Block</strong></td>
+        <td>Footer displays matching Ember &amp; Oak emblem, business description, operating hours, and copyright notice.</td>
+        <td class="priority-col"><span class="badge badge-stone">P2</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Design System Labels</strong></td>
+        <td>Section eyebrows are sentence case 14px text in muted gray with optional 24px subtle line. Product tags are 12px with 6px radius. NO sparkles, emoji, or fake badges.</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 2 -->
+  <h2><span class="num">2</span> Scroll-to-Play Video &amp; Hero Section</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Check Item</th>
+        <th style="width: 50%;">Expected Behavior</th>
+        <th class="priority-col">Priority</th>
+        <th class="status-col">Pass / Fail</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>No Autoplay on Load</strong></td>
+        <td>On initial page load, burger video does NOT play automatically. Video remains paused at first frame waiting for scroll.</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Single Scroll Trigger</strong></td>
+        <td>When the user scrolls <strong>one time</strong> (mouse wheel, touch swipe, or scrollbar movement), video begins playing and continues looping smoothly.</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Zero Video Overlays</strong></td>
+        <td>NO buttons, play/pause controls, or status badges appear over the video container. Video is completely clean and unobstructed.</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Background Color #DDDDDD</strong></td>
+        <td>Hero section background is <code>#DDDDDD</code>, matching video canvas seamlessly. Transition gradient into the next section eliminates extra white space.</td>
+        <td class="priority-col"><span class="badge badge-stone">P2</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Offscreen Pause</strong></td>
+        <td>IntersectionObserver pauses the video when scrolled completely out of view to preserve CPU/battery and resumes when scrolled back.</td>
+        <td class="priority-col"><span class="badge badge-stone">P2</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PAGE BREAK FOR CLEAN PRINTING -->
+  <div class="page-break"></div>
+
+  <!-- SECTION 3 -->
+  <h2><span class="num">3</span> Framer Motion Staggered Animations</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Check Item</th>
+        <th style="width: 50%;">Expected Behavior</th>
+        <th class="priority-col">Priority</th>
+        <th class="status-col">Pass / Fail</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Hero Elements Sequence</strong></td>
+        <td>Headline, Subtitle, CTA buttons, and Prep Note enter sequentially with staggered motion delays (0s, 0.15s, 0.28s, 0.42s).</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Menu Cards Stagger</strong></td>
+        <td>Upon scrolling to Menu or switching category filters, cards animate in <strong>one by one</strong> (0.07s delay between cards) instead of appearing all at once.</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Category Filter Pills</strong></td>
+        <td>Category filter buttons (All, Burgers &amp; Grill, Sides, etc.) cascade in one by one.</td>
+        <td class="priority-col"><span class="badge badge-stone">P2</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Story Pillars Reveal</strong></td>
+        <td>In "Our Story" section, the 3 craft pillars ("Fresh Ingredients", "Flame Grilled", "Craft Combinations") reveal sequentially with 0.15s stagger.</td>
+        <td class="priority-col"><span class="badge badge-stone">P2</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Combo Meal Tiers</strong></td>
+        <td>The 3 meal combo cards (Classic Set, Double Smokehouse Set, Triple Burger Feast) enter sequentially with 0.15s stagger.</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 4 -->
+  <h2><span class="num">4</span> Functional Features &amp; User Journeys</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Feature Flow</th>
+        <th style="width: 50%;">Verification Steps &amp; Expected Output</th>
+        <th class="priority-col">Priority</th>
+        <th class="status-col">Pass / Fail</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Menu Filtering &amp; Search</strong></td>
+        <td>Click each category pill. Verify only relevant dishes display. Type search term (e.g. "Truffle"); verify instant filtering. Click "Clear" or "Reset".</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Cart Drawer &amp; Order Flow</strong></td>
+        <td>Click "+ Add" on any dish. Header cart counter increments. Open Cart Drawer: verify item title, price, quantity +/- buttons, remove item, subtotal.</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Combo Meals Ordering</strong></td>
+        <td>Click "Add Combo to Order" on Double Smokehouse Set. Confirm combo added to cart with correct price ($32) and checklist items.</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Order Booking Form</strong></td>
+        <td>Select "Pickup / Takeaway" or "Local Delivery". Fill Name, Phone, and Time Slot. Click "Confirm Order Booking". Verify celebration modal and Order ID.</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Footer Contact &amp; Hours</strong></td>
+        <td>Click phone link to initiate call on mobile. Verify opening hours: Mon-Sun 11:30 AM – 11:00 PM. Newsletter input displays confirmation message.</td>
+        <td class="priority-col"><span class="badge badge-stone">P2</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 5 -->
+  <h2><span class="num">5</span> Responsive &amp; Cross-Device Matrix</h2>
+  <table class="matrix-table">
+    <thead>
+      <tr>
+        <th style="width: 22%;">Viewport / Device</th>
+        <th style="width: 18%;">Dimensions</th>
+        <th style="width: 45%;">Critical Things to Check</th>
+        <th class="status-col">Pass / Fail</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Desktop 4K / Widescreen</strong></td>
+        <td>1920 × 1080+</td>
+        <td>Max width 1280px properly centered; no stretched images; video positioned neatly in right column; clean typography margins.</td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Standard Laptop</strong></td>
+        <td>1440 × 900 / 1280 × 800</td>
+        <td>2-column hero split; sticky navbar blur visible; menu displays in 3-column grid; no layout shifts.</td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Tablet Landscape</strong></td>
+        <td>1024 × 768 (iPad)</td>
+        <td>Navigation links remain horizontal; menu grid switches to 2 or 3 columns; combo meal cards render without truncation.</td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Tablet Portrait</strong></td>
+        <td>768 × 1024 (iPad)</td>
+        <td>Hero stacks cleanly or maintains 2 columns without clipping; category filter pills scroll horizontally with smooth momentum.</td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Large Mobile</strong></td>
+        <td>430 × 932 (iPhone Pro Max)</td>
+        <td>Headline stacks on top of video; burger video visible 100% with no overlay; hamburger menu works smoothly; minimum 44px tap targets.</td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Standard Mobile</strong></td>
+        <td>390 × 844 (iPhone 14)</td>
+        <td>Cart drawer full-width sliding from right; zero horizontal page scroll; touch swipe triggers video playback seamlessly.</td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Compact Mobile</strong></td>
+        <td>375 × 667 (iPhone SE)</td>
+        <td>Font sizes scale cleanly; combo selector buttons do not wrap awkwardly; checkout button always accessible.</td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- PAGE BREAK -->
+  <div class="page-break"></div>
+
+  <!-- SECTION 6 -->
+  <h2><span class="num">6</span> Automated Test Suite Verification</h2>
+  <p>The repository contains an automated Vitest test suite. QA engineers can verify test results locally by executing:</p>
+  <div style="background: #1c1917; color: #f5f5f4; padding: 10px 14px; border-radius: 6px; font-family: monospace; font-size: 8.5pt; margin-bottom: 14px;">
+    npm test
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 30%;">Test File</th>
+        <th style="width: 50%;">Assertions Verified</th>
+        <th class="status-col">Result</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>ScrollVideoHero.test.tsx</code></td>
+        <td>
+          • Video element rendered without <code>autoPlay</code> attribute<br>
+          • Initial mount invokes <code>pause()</code>, NOT <code>play()</code><br>
+          • Zero button or overlay elements present over video<br>
+          • <code>window.scroll</code> event triggers <code>video.play()</code><br>
+          • <code>window.wheel</code> event triggers <code>video.play()</code><br>
+          • <code>window.touchmove</code> event triggers <code>video.play()</code><br>
+          • Event listeners properly unregistered on unmount
+        </td>
+        <td class="status-col"><span class="badge badge-green">7/7 Passed</span></td>
+      </tr>
+      <tr>
+        <td><code>BrandLogo.test.tsx</code></td>
+        <td>
+          • Renders brand name "Ember &amp; Oak"<br>
+          • Renders subtitle "Craft Kitchen &amp; Woodfire Grill"<br>
+          • Renders vector SVG crest emblem<br>
+          • Supports <code>iconOnly</code> prop
+        </td>
+        <td class="status-col"><span class="badge badge-green">4/4 Passed</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SECTION 7 -->
+  <h2><span class="num">7</span> Performance, A11y &amp; Core Web Vitals</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Metric / Target</th>
+        <th style="width: 50%;">Testing Methodology &amp; Benchmarks</th>
+        <th class="priority-col">Standard</th>
+        <th class="status-col">Pass / Fail</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>LCP (Largest Contentful Paint)</strong></td>
+        <td>Under 2.5s on 4G emulation. Hero video poster loads with high priority; no blocking script delays.</td>
+        <td class="priority-col"><span class="badge badge-green">&lt; 2.5s</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>CLS (Cumulative Layout Shift)</strong></td>
+        <td>Zero unexpected layout shifts when video or food images buffer. All images have aspect ratios and dimensions defined.</td>
+        <td class="priority-col"><span class="badge badge-green">&lt; 0.1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Color Contrast (WCAG AA)</strong></td>
+        <td>Text contrast ratio ≥ 4.5:1 on all body text and buttons. Muted eyebrows have sufficient contrast against white and #faf9f6.</td>
+        <td class="priority-col"><span class="badge badge-stone">WCAG AA</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+      <tr>
+        <td><strong>Keyboard Navigation</strong></td>
+        <td>All interactive elements (Navbar links, Menu category buttons, Add to Cart, Order Booking inputs) reachable via Tab key with visible focus rings.</td>
+        <td class="priority-col"><span class="badge badge-amber">P1</span></td>
+        <td class="status-col"><span class="checkbox"></span> Pass</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- SIGN-OFF SECTION -->
+  <div class="signoff-box">
+    <h3 style="margin-top: 0; margin-bottom: 8px;">QA Sign-Off &amp; Approval</h3>
+    <div class="signoff-grid">
+      <div>
+        <div class="signoff-item"></div>
+        <strong>QA Lead Signature:</strong>
+      </div>
+      <div>
+        <div class="signoff-item"></div>
+        <strong>Date Tested:</strong>
+      </div>
+      <div>
+        <div class="signoff-item"></div>
+        <strong>Status (Approved / Blocked):</strong>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

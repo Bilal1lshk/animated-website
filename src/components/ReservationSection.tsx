@@ -112,17 +112,29 @@ export default function ReservationSection() {
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="text-center max-w-2xl mx-auto mb-12 sm:mb-16"
+        >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-stone-900 tracking-tight mb-3">
             Place Your Order
           </h2>
           <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
             Order fresh flame-grilled burgers, loaded fries, and craft shakes for fast pickup or delivery.
           </p>
-        </div>
+        </motion.div>
 
         {/* Order Booking Container */}
-        <div className="bg-[#faf9f6] rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xs">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="bg-[#faf9f6] rounded-3xl p-6 sm:p-10 border border-stone-200 shadow-xs"
+        >
           {/* Step 1: Order Type Selector */}
           <div className="mb-8">
             <label className="block text-xs font-semibold uppercase tracking-wider text-stone-700 mb-3">
@@ -439,7 +451,7 @@ export default function ReservationSection() {
               </form>
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Confirmation Modal */}
