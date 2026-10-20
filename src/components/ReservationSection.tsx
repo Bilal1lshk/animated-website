@@ -15,10 +15,46 @@ import {
   Bike,
   Store,
   UtensilsCrossed,
+  AlertCircle,
 } from "lucide-react";
 import Tag from "@/components/Tag";
 import { useCart } from "@/context/CartContext";
 import { MENU_ITEMS, MenuItem } from "@/data/restaurantData";
+
+export const validatePhoneNumber = (
+  val: string
+): { isValid: boolean; error?: string } => {
+  const trimmed = val.trim();
+  if (!trimmed) {
+    return { isValid: false, error: "Phone number is required to confirm your order." };
+  }
+
+  // Check for allowed characters: digits, spaces, +, -, (, ), .
+  const allowedCharsRegex = /^[+]?[\d\s().-]+$/;
+  if (!allowedCharsRegex.test(trimmed)) {
+    return {
+      isValid: false,
+      error: "Phone number contains invalid characters (letters or symbols).",
+    };
+  }
+
+  // Count actual digits
+  const digits = trimmed.replace(/\D/g, "");
+  if (digits.length < 10) {
+    return {
+      isValid: false,
+      error: `Phone number is too short (${digits.length} digits). Must contain at least 10 digits with area code.`,
+    };
+  }
+  if (digits.length > 15) {
+    return {
+      isValid: false,
+      error: "Phone number is too long. Cannot exceed 15 digits.",
+    };
+  }
+
+  return { isValid: true };
+};
 
 export default function ReservationSection() {
   const {
@@ -39,6 +75,10 @@ export default function ReservationSection() {
   const [timeSlot, setTimeSlot] = useState("ASAP (15–20 mins)");
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [nameError, setNameError] = useState<string | null>(null);
+  const [addressError, setAddressError] = useState<string | null>(null);
+
   const [confirmedOrder, setConfirmedOrder] = useState<{
     orderId: string;
     name: string;
@@ -57,27 +97,79 @@ export default function ReservationSection() {
     addToCart(item);
   };
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setPhone(val);
+    if (phoneError) {
+      const validation = validatePhoneNumber(val);
+      if (validation.isValid) {
+        setPhoneError(null);
+      }
+    }
+  };
+
+  const handlePhoneBlur = () => {
+    if (phone.trim()) {
+      const validation = validatePhoneNumber(phone);
+      if (!validation.isValid) {
+        setPhoneError(validation.error || "Please enter a valid phone number.");
+      } else {
+        setPhoneError(null);
+      }
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone) return;
-    if (items.length === 0) return;
+
+    let hasError = false;
+
+    // Validate Name
+    if (!name.trim()) {
+      setNameError("Full name is required.");
+      hasError = true;
+    } else {
+      setNameError(null);
+    }
+
+    // Validate Phone Number strictly and block if invalid
+    const phoneValidation = validatePhoneNumber(phone);
+    if (!phoneValidation.isValid) {
+      setPhoneError(phoneValidation.error || "Please enter a valid phone number.");
+      hasError = true;
+    } else {
+      setPhoneError(null);
+    }
+
+    // Validate Delivery Address
+    if (orderType === "delivery" && !address.trim()) {
+      setAddressError("Delivery address is required for local delivery.");
+      hasError = true;
+    } else {
+      setAddressError(null);
+    }
+
+    // BLOCK SUBMISSION if validation fails or cart is empty
+    if (hasError || items.length === 0) {
+      return;
+    }
 
     setIsSubmitting(true);
 
     setTimeout(() => {
       setIsSubmitting(false);
-      const orderId = "GS-" + Math.floor(100000 + Math.random() * 900000);
+      const orderId = "EO-" + Math.floor(100000 + Math.random() * 900000);
       setConfirmedOrder({
         orderId,
-        name,
-        phone,
+        name: name.trim(),
+        phone: phone.trim(),
         orderType:
           orderType === "pickup"
             ? "Takeaway / Pickup"
             : orderType === "delivery"
             ? "Local Delivery"
             : "Dine-In Quick Order",
-        address: orderType === "delivery" ? address : undefined,
+        address: orderType === "delivery" ? address.trim() : undefined,
         timeSlot,
         total,
         itemCount: items.reduce((sum, i) => sum + i.quantity, 0),
@@ -103,6 +195,9 @@ export default function ReservationSection() {
     setPhone("");
     setAddress("");
     setNotes("");
+    setPhoneError(null);
+    setNameError(null);
+    setAddressError(null);
   };
 
   return (
@@ -337,12 +432,25 @@ export default function ReservationSection() {
                     </label>
                     <input
                       type="text"
-                      required
                       placeholder="e.g. Alex Johnson"
                       value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
+                      onChange={(e) => {
+                        setName(e.target.value);
+                        if (nameError && e.target.value.trim()) setNameError(null);
+                      }}
+                      aria-invalid={!!nameError}
+                      className={`w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none transition-colors border ${
+                        nameError
+                          ? "border-rose-500 bg-rose-50/30 focus:border-rose-600 focus:ring-1 focus:ring-rose-500"
+                          : "border-stone-300 bg-white focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
+                      }`}
                     />
+                    {nameError && (
+                      <p className="text-[11px] font-medium text-rose-600 mt-1 flex items-center gap-1" role="alert">
+                        <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span>{nameError}</span>
+                      </p>
+                    )}
                   </div>
 
                   <div>
@@ -351,12 +459,23 @@ export default function ReservationSection() {
                     </label>
                     <input
                       type="tel"
-                      required
                       placeholder="e.g. (555) 234-5678"
                       value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
+                      onChange={handlePhoneChange}
+                      onBlur={handlePhoneBlur}
+                      aria-invalid={!!phoneError}
+                      className={`w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none transition-colors border ${
+                        phoneError
+                          ? "border-rose-500 bg-rose-50/30 focus:border-rose-600 focus:ring-1 focus:ring-rose-500"
+                          : "border-stone-300 bg-white focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
+                      }`}
                     />
+                    {phoneError && (
+                      <p className="text-[11px] font-medium text-rose-600 mt-1 flex items-center gap-1" role="alert">
+                        <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span>{phoneError}</span>
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -368,12 +487,25 @@ export default function ReservationSection() {
                     </label>
                     <input
                       type="text"
-                      required
                       placeholder="Street address, apartment or suite number"
                       value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      className="w-full px-3.5 py-2.5 bg-white border border-stone-300 rounded-xl text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
+                      onChange={(e) => {
+                        setAddress(e.target.value);
+                        if (addressError && e.target.value.trim()) setAddressError(null);
+                      }}
+                      aria-invalid={!!addressError}
+                      className={`w-full px-3.5 py-2.5 rounded-xl text-xs sm:text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none transition-colors border ${
+                        addressError
+                          ? "border-rose-500 bg-rose-50/30 focus:border-rose-600 focus:ring-1 focus:ring-rose-500"
+                          : "border-stone-300 bg-white focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
+                      }`}
                     />
+                    {addressError && (
+                      <p className="text-[11px] font-medium text-rose-600 mt-1 flex items-center gap-1" role="alert">
+                        <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                        <span>{addressError}</span>
+                      </p>
+                    )}
                   </div>
                 )}
 

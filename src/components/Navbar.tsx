@@ -34,6 +34,33 @@ export default function Navbar() {
     { label: "Order Booking", href: "#reservation" },
   ];
 
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string
+  ) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+
+    if (href.startsWith("#")) {
+      const targetId = href.substring(1);
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        const headerOffset = 70;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition =
+          elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth",
+        });
+        window.history.pushState(null, "", href);
+      }
+    } else {
+      window.location.href = href;
+    }
+  };
+
   return (
     <>
       {/* Streamlined Main Navbar */}
@@ -59,7 +86,8 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className="text-xs font-semibold uppercase tracking-[0.15em] text-stone-700 hover:text-amber-700 transition-colors relative group py-1"
+                onClick={(e) => handleNavClick(e, link.href)}
+                className="text-xs font-semibold uppercase tracking-[0.15em] text-stone-700 hover:text-amber-700 transition-colors relative group py-1 cursor-pointer"
               >
                 {link.label}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-amber-600 group-hover:w-full transition-all duration-300 ease-out" />
@@ -111,19 +139,19 @@ export default function Navbar() {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.25 }}
-            className="md:hidden fixed top-[60px] left-0 w-full bg-white/98 backdrop-blur-xl border-b border-stone-200 z-30 shadow-xl overflow-hidden"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.2 }}
+            className="md:hidden fixed top-[64px] left-0 right-0 w-full bg-white/98 backdrop-blur-xl border-b border-stone-200 z-50 shadow-2xl overflow-y-auto max-h-[calc(100vh-64px)]"
           >
             <div className="px-6 py-6 flex flex-col gap-4">
               {navLinks.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-semibold tracking-wide text-stone-900 hover:text-amber-700 transition-colors border-b border-stone-100 pb-3"
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  className="text-base font-semibold tracking-wide text-stone-900 hover:text-amber-700 active:text-amber-700 transition-colors border-b border-stone-100 pb-3 block cursor-pointer"
                 >
                   {link.label}
                 </a>
@@ -131,8 +159,8 @@ export default function Navbar() {
               <div className="pt-2 flex flex-col gap-2">
                 <a
                   href="#reservation"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="w-full text-center py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 transition-all"
+                  onClick={(e) => handleNavClick(e, "#reservation")}
+                  className="w-full text-center py-3 rounded-full text-xs font-semibold uppercase tracking-wider text-white bg-stone-900 hover:bg-amber-600 active:scale-[0.98] transition-all block cursor-pointer"
                 >
                   Order Booking
                 </a>
